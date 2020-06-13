@@ -7,6 +7,10 @@
 
   programs.zsh.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    home-manager
+  ];
+
   system.defaults.dock.autohide = true;
   system.defaults.dock.orientation = "bottom";
   system.defaults.dock.showhidden = true;
@@ -16,6 +20,27 @@
   system.defaults.finder.CreateDesktop = false;
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder.FXEnableExtensionChangeWarning = false;
+
+  services.yabai = {
+    enable = true;
+    package = pkgs.yabai;
+    config = {
+      layout = "bsp";
+
+      top_padding = 20;
+      bottom_padding = 20;
+      left_padding = 20;
+      right_padding = 20;
+      window_gap = 20;
+
+      window_border = "off";
+    };
+  };
+
+  services.skhd = {
+    enable = true;
+    skhdConfig = builtins.readFile ./home/skhdrc;
+  };
 
   # Nix settings
   programs.nix-index.enable = true;
