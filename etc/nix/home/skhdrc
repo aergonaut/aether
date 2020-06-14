@@ -1,6 +1,3 @@
-# Open kitty
-shift + alt + ctrl - return : /Users/chris/.nix-profile/Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
-
 # Open Firefox
 cmd + shift + alt + ctrl - return : /Applications/Firefox.app/Contents/MacOS/firefox
 

@@ -39,7 +39,12 @@
 
   services.skhd = {
     enable = true;
-    skhdConfig = builtins.readFile ./home/skhdrc;
+    skhdConfig = ''
+      # Open kitty
+      shift + alt + ctrl - return : ${pkgs.kitty}/Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
+
+      ${builtins.readFile ./home/skhdrc}
+    '';
   };
 
   # Nix settings
