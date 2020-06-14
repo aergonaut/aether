@@ -3,6 +3,17 @@
 {
   programs.home-manager.enable = true;
 
+  home.packages = with pkgs; [
+    pinentry_mac
+  ];
+
+  home.file.".gnupg/gpg-agent.conf".text = ''
+    use-standard-socket
+    default-cache-ttl 600
+    max-cache-ttl 7200
+    pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/MacOS/pinentry-mac
+  '';
+
   xdg.enable = true;
 
   programs.kitty = {
@@ -58,6 +69,38 @@
 
   programs.bat.enable = true;
   programs.fzf.enable = true;
+  programs.gpg.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName = "Chris Fung";
+    userEmail = "aergonaut@gmail.com";
+
+    signing = {
+      signByDefault = true;
+      key = "E89B5EC467AC51D8";
+    };
+
+    extraConfig = {
+      core = {
+        autocrlf = "input";
+      };
+      color.ui = true;
+      pull.rebase = true;
+      push.default = "upstream";
+      fetch.prune = true;
+      merge.conflictstyle = "diff3";
+      diff.algorithm = "patience";
+      credential.helper = "osxkeychain";
+    };
+
+    aliases = {
+      pf = "push --force-with-lease";
+      cp = "cherry-pick";
+      unc = "reset --soft HEAD^";
+      uns = "reset";
+    };
+  };
 
   programs.neovim = {
     enable = true;
