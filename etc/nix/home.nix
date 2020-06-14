@@ -1,10 +1,25 @@
 { config, pkgs, lib, ... }:
 
-{
+let
+  LS_COLORS = pkgs.fetchgit {
+    url = "https://github.com/trapd00r/LS_COLORS";
+    rev = "034aee597117492778c9223b7e2188ed6a5bef54";
+    sha256 = "0wwmyfknni847rz6b4brgv3fivyqxl6a2qlb3mizrkyjc466gbvy";
+  };
+
+  ls-colors = pkgs.runCommand "ls-colors" { } ''
+    mkdir -p $out/bin $out/share
+    ln -s ${pkgs.coreutils}/bin/ls $out/bin/ls
+    ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
+    cp ${LS_COLORS}/LS_COLORS $out/share/LS_COLORS
+  '';
+in {
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
+    ls-colors
     pinentry_mac
+    ripgrep
   ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
@@ -68,8 +83,57 @@
   };
 
   programs.bat.enable = true;
-  programs.fzf.enable = true;
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   programs.gpg.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    defaultKeymap = "emacs";
+    shellAliases = import ./home/shellAliases.nix;
+    initExtraBeforeCompInit = ''
+      eval $(${pkgs.coreutils}/bin/dircolors -b ${ls-colors}/share/LS_COLORS)
+    '';
+
+    plugins = [
+      {
+        name = "titles";
+        src = pkgs.fetchFromGitHub {
+          owner = "jreese";
+          repo = "zsh-titles";
+          rev = "2353ff59d304aeff328c6dfa9ba033f8672c030f";
+          sha256 = "014pc85qw5isxwaawzas8yhqmkhvpvwnx9jlipldbhvkpw45milx";
+        };
+      }
+      {
+        name = "zsh-syntax-highlighting";
+        src = pkgs.fetchFromGitHub {
+          owner = "zsh-users";
+          repo = "zsh-syntax-highlighting";
+          rev = "0.7.1";
+          sha256 = "03r6hpb5fy4yaakqm3lbf4xcvd408r44jgpv4lnzl9asp4sb9qc0";
+        };
+      }
+    ];
+
+    sessionVariables = rec {
+      RPROMPT = "";
+      PATH = "$HOME/bin:$PATH";
+      EDITOR = "vim";
+      VISUAL = EDITOR;
+      GIT_EDITOR = EDITOR;
+      HOME_MANAGER_CONFIG = /usr/local/aether/etc/nix/home.nix;
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
   programs.git = {
     enable = true;

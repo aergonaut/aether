@@ -8,6 +8,7 @@
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
+    coreutils
     home-manager
   ];
 
