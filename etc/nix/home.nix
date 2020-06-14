@@ -150,6 +150,7 @@ in {
       EDITOR = "vim";
       VISUAL = EDITOR;
       GIT_EDITOR = EDITOR;
+      HOMEBREW_NO_INSTALL_CLEANUP = 1;
       HOME_MANAGER_CONFIG = /usr/local/aether/etc/nix/home.nix;
     };
   };
