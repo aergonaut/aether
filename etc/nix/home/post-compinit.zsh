@@ -58,3 +58,7 @@ _fuzzy_git_shalector() {
 }
 zle -N fuzzy-git-shalector _fuzzy_git_shalector
 bindkey '^g^s' fuzzy-git-shalector
+
+bindkey '^B' autosuggest-accept
+
+eval "$(shadowenv init zsh)"

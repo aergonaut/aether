@@ -7,6 +7,13 @@ let
     sha256 = "0wwmyfknni847rz6b4brgv3fivyqxl6a2qlb3mizrkyjc466gbvy";
   };
 
+  ohmyzsh = pkgs.fetchFromGitHub {
+    owner = "ohmyzsh";
+    repo = "ohmyzsh";
+    rev = "db94f60d342ba2be7dbe3bfd86f4edb335c2a6a7";
+    sha256 = "14zvbnrnkcmqnjbw71j4jgfm7gkrgpchkfrpdw006q25gqxj0bgm";
+  };
+
   ls-colors = pkgs.runCommand "ls-colors" { } ''
     mkdir -p $out/bin $out/share
     ln -s ${pkgs.coreutils}/bin/ls $out/bin/ls
@@ -17,9 +24,11 @@ in {
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
+    chruby
     ls-colors
     pinentry_mac
     ripgrep
+    shadowenv
   ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
@@ -82,7 +91,10 @@ in {
     };
   };
 
-  programs.bat.enable = true;
+  programs.bat = {
+    enable = true;
+    config.theme = "TwoDark";
+  };
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -97,9 +109,21 @@ in {
     shellAliases = import ./home/shellAliases.nix;
     initExtraBeforeCompInit = ''
       eval $(${pkgs.coreutils}/bin/dircolors -b ${ls-colors}/share/LS_COLORS)
+
+      ${builtins.readFile ./home/pre-compinit.zsh}
+    '';
+    initExtra = ''
+      source ${pkgs.chruby}/share/chruby/chruby.sh
+      source ${pkgs.chruby}/share/chruby/auto.sh
+      ${builtins.readFile ./home/post-compinit.zsh}
     '';
 
     plugins = [
+      {
+        name = "git";
+        src = ohmyzsh;
+        file = "plugins/git/git.plugin.zsh";
+      }
       {
         name = "titles";
         src = pkgs.fetchFromGitHub {
@@ -164,6 +188,28 @@ in {
       unc = "reset --soft HEAD^";
       uns = "reset";
     };
+
+    ignores = [
+      ".DS_Store"
+      "*.sw[nop]"
+      ".bundle"
+      ".byebug_history"
+      "db/*.sqlite3"
+      "log/*.log"
+      "rerun.txt"
+      "tags"
+      "!tags/"
+      "tmp/**/*"
+      "!tmp/cache/.keep"
+      "*.pyc"
+      "vim/view"
+
+      ".project-notes"
+      ".vimrc.local"
+      "node_modules"
+
+      ".shadowenv.d/"
+    ];
   };
 
   programs.neovim = {
