@@ -181,6 +181,10 @@ in {
       merge.conflictstyle = "diff3";
       diff.algorithm = "patience";
       credential.helper = "osxkeychain";
+      url."https://github.com/coupa/".insteadOf = [
+        "git@github.com:coupa/"
+        "ssh://git@github.com:coupa/"
+      ];
     };
 
     aliases = {
