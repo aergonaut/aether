@@ -222,6 +222,9 @@ in {
   programs.neovim = {
     enable = true;
     vimAlias = true;
+    extraConfig = ''
+      nnoremap <C-p> :Files<cr>
+    '';
 
     plugins = with pkgs.vimPlugins; [
       vim-nix
@@ -230,6 +233,7 @@ in {
 
       vim-surround
       vim-easymotion
+      fzf-vim
     ];
   };
 }
