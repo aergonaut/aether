@@ -26,9 +26,11 @@ in {
   home.packages = with pkgs; [
     chruby
     ls-colors
+    nodejs
     pinentry_mac
     ripgrep
     shadowenv
+    yarn
   ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
