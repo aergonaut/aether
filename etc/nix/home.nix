@@ -223,7 +223,19 @@ in {
     enable = true;
     vimAlias = true;
     extraConfig = ''
+      " fzf
+      let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
       nnoremap <C-p> :Files<cr>
+
+      " window commands
+      nnoremap <C-h> <C-w>h
+      nnoremap <C-j> <C-w>j
+      nnoremap <C-k> <C-w>k
+      nnoremap <C-l> <C-w>l
+
+      " easier beginning/end of line
+      noremap H ^
+      noremap L $
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -231,6 +243,7 @@ in {
       vim-ruby
       rust-vim
 
+      vim-sensible
       vim-surround
       vim-easymotion
       fzf-vim
