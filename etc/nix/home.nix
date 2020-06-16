@@ -27,9 +27,11 @@ in {
     chruby
     ls-colors
     nodejs
+    overmind
     pinentry_mac
     ripgrep
     shadowenv
+    tmux
     yarn
   ];
 
