@@ -29,3 +29,6 @@ alt - t : yabai -m window --toggle float;\
 
 # toggle fullscreen zoom
 alt - d : yabai -m window --toggle zoom-fullscreen
+
+# refresh yabai
+shift + alt + ctrl - r : launchctl kickstart -k "gui/${UID}/org.nixos.yabai"
