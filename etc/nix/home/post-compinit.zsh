@@ -61,4 +61,8 @@ bindkey '^g^s' fuzzy-git-shalector
 
 bindkey '^B' autosuggest-accept
 
+export LOCKIT_GITHUB_TOKEN=$(security find-generic-password -s 'Lockit GitHub Access Token' -a lockit-github-access-token -g 2>&1 >/dev/null | cut -d \" -f 2)
+export LOCKIT_API_KEY=$(security find-generic-password -s 'Lockit API Key' -a lockit-api-key -g 2>&1 >/dev/null | cut -d \" -f 2)
+export LOCKIT_HOST=https://lockit-coupa.appspot.com
+
 eval "$(shadowenv init zsh)"
