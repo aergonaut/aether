@@ -124,6 +124,11 @@ in {
 
     plugins = [
       {
+        name = "libgit";
+        src = ohmyzsh;
+        file = "lib/git.zsh";
+      }
+      {
         name = "git";
         src = ohmyzsh;
         file = "plugins/git/git.plugin.zsh";
