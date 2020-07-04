@@ -65,4 +65,6 @@ export LOCKIT_GITHUB_TOKEN=$(security find-generic-password -s 'Lockit GitHub Ac
 export LOCKIT_API_KEY=$(security find-generic-password -s 'Lockit API Key' -a lockit-api-key -g 2>&1 >/dev/null | cut -d \" -f 2)
 export LOCKIT_HOST=https://lockit-coupa.appspot.com
 
+export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
+
 eval "$(shadowenv init zsh)"
