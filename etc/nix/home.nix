@@ -39,7 +39,7 @@ in {
     use-standard-socket
     default-cache-ttl 600
     max-cache-ttl 7200
-    pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/MacOS/pinentry-mac
+    pinentry-program ${pkgs.pinentry_mac}/${pkgs.pinentry_mac.binaryPath}
   '';
 
   xdg.enable = true;
