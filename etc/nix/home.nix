@@ -25,6 +25,8 @@ in {
 
   home.packages = with pkgs; [
     chruby
+    fd
+    git
     ls-colors
     nodejs
     overmind

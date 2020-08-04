@@ -36,6 +36,9 @@
 
       window_border = "off";
     };
+    extraConfig = ''
+      yabai -m rule --add app='^Tandem' manage=off
+    '';
   };
 
   services.skhd = {
