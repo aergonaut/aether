@@ -26,6 +26,8 @@ in {
   home.packages = with pkgs; [
     chruby
     fd
+    geckodriver
+    gitAndTools.gh
     git
     ls-colors
     nodejs
@@ -184,6 +186,9 @@ in {
     extraConfig = {
       core = {
         autocrlf = "input";
+      };
+      init = {
+        defaultBranch = "main";
       };
       color.ui = true;
       pull.rebase = true;
