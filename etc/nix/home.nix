@@ -237,6 +237,10 @@ in {
     enable = true;
     vimAlias = true;
     extraConfig = ''
+      set termguicolors
+      colorscheme neodark
+      let g:neodark#terminal_transparent = 1
+
       " fzf
       let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
       nnoremap <C-p> :Files<cr>
@@ -261,6 +265,9 @@ in {
       vim-surround
       vim-easymotion
       fzf-vim
+
+      coc-nvim
+      neodark-vim
     ];
   };
 }
