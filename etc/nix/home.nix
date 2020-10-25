@@ -36,6 +36,7 @@ in {
     ripgrep
     shadowenv
     tmux
+    vscodium
     yarn
   ];
 
@@ -47,6 +48,7 @@ in {
   '';
 
   xdg.enable = true;
+  xdg.configFile."starship.toml".text = builtins.readFile ./home/config/starship.toml;
 
   programs.kitty = {
     enable = true;
