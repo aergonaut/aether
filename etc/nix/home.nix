@@ -38,6 +38,7 @@ in {
     tmux
     vscodium
     yarn
+    youtube-dl
   ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
