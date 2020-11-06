@@ -36,7 +36,6 @@ in {
     ripgrep
     shadowenv
     tmux
-    vscodium
     yarn
     youtube-dl
   ];
@@ -106,10 +105,12 @@ in {
     enable = true;
     config.theme = "TwoDark";
   };
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
   };
+
   programs.gpg.enable = true;
 
   programs.zsh = {
@@ -233,6 +234,7 @@ in {
       "node_modules"
 
       ".shadowenv.d/"
+      ".solargraph.yml"
     ];
   };
 
@@ -272,5 +274,11 @@ in {
       coc-nvim
       neodark-vim
     ];
+  };
+
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscodium;
+    userSettings = import ./home/vscode.nix;
   };
 }
