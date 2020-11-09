@@ -14,6 +14,8 @@
   "files.insertFinalNewLine" = true;
   "[javascript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
   "[javascriptreact]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
+  "[typescript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
+  "[typescriptreact]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
   "ruby.useBundler" = true;
   "ruby.useLanguageServer" = true;
   "ruby.lint" = {
