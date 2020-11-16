@@ -280,5 +280,15 @@ in {
     enable = true;
     package = pkgs.vscodium;
     userSettings = import ./home/vscode.nix;
+    keybindings = [
+      {
+        key = "shift+cmd+\\";
+        command = "workbench.files.action.showActiveFileInExplorer";
+      }
+      {
+        key = "alt+cmd+\\";
+        command = "-workbench.files.action.showActiveFileInExplorer";
+      }
+    ];
   };
 }

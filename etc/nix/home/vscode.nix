@@ -8,6 +8,7 @@
   "editor.minimap.enabled" = false;
   "editor.dragAndDrop" = false;
   "editor.rulers" = [ 80 ];
+  "editor.tabSize" = 2;
   "update.mode" = "manual";
   "explorer.openEditors.visible" = 0;
   "explorer.autoReveal" = false;
