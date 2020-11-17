@@ -10,6 +10,7 @@
   "editor.rulers" = [ 80 ];
   "editor.tabSize" = 2;
   "update.mode" = "manual";
+  "extensions.autoUpdate" = false;
   "explorer.openEditors.visible" = 0;
   "explorer.autoReveal" = false;
   "files.insertFinalNewLine" = true;

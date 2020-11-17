@@ -279,6 +279,7 @@ in {
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
+
     userSettings = import ./home/vscode.nix;
     keybindings = [
       {
@@ -288,6 +289,53 @@ in {
       {
         key = "alt+cmd+\\";
         command = "-workbench.files.action.showActiveFileInExplorer";
+      }
+    ];
+
+    extensions = with pkgs.vscode-extensions; [
+      vscodevim.vim
+    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "nix";
+        publisher = "bbenoist";
+        version = "1.0.1";
+        sha256 = "0zd0n9f5z1f0ckzfjr38xw2zzmcxg1gjrava7yahg5cvdcw6l35b";
+      }
+      {
+        name = "vscode-eslint";
+        publisher = "dbaeumer";
+        version = "2.1.13";
+        sha256 = "1adzgisljlq6xmmwrziawkgy941bf8i8nq4c9w3gnsbr20gd9pyi";
+      }
+      {
+        name = "gitlens";
+        publisher = "eamodio";
+        version = "10.2.1";
+        sha256 = "1bh6ws20yi757b4im5aa6zcjmsgdqxvr1rg86kfa638cd5ad1f97";
+      }
+      {
+        name = "file-icons";
+        publisher = "file-icons";
+        version = "1.0.24";
+        sha256 = "0mcaz4lv7zb0gw0i9zbd0cmxc41dnw344ggwj1wy9y40d627wdcx";
+      }
+      {
+        name = "atom-keybindings";
+        publisher = "ms-vscode";
+        version = "3.0.6";
+        sha256 = "0r5brd9iirfs3zaqq1swlx2n3mqxzyggv4rzjdyjh8zsyi1lfjas";
+      }
+      {
+        name = "github-vscode-theme";
+        publisher = "github";
+        version = "1.1.5";
+        sha256 = "1llyrm4iwdp79ylnw4kn5g6qlp8blrpaddszhl61yv82rs60kw0h";
+      }
+      {
+        name = "prettier-vscode";
+        publisher = "esbenp";
+        version = "5.7.2";
+        sha256 = "1wf4dwh11pz2hcy26kvhqnp2bhnk6n0pjh2qs0jsn8sl16656f1f";
       }
     ];
   };
