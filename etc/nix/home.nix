@@ -337,6 +337,12 @@ in {
         version = "5.7.2";
         sha256 = "1wf4dwh11pz2hcy26kvhqnp2bhnk6n0pjh2qs0jsn8sl16656f1f";
       }
+      {
+        name = "haml";
+        publisher = "karunamurti";
+        version = "1.3.1";
+        sha256 = "1d5143m9ysn0s8q2c06gw7fswk5mah1p3g2gcrg93117y7ky24s3";
+      }
     ];
   };
 }
