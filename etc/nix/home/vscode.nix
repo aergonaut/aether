@@ -9,6 +9,9 @@
   "editor.dragAndDrop" = false;
   "editor.rulers" = [ 80 ];
   "editor.tabSize" = 2;
+  "editor.formatOnSave" = true;
+  "files.insertFinalNewline" = true;
+  "files.trimFinalNewlines" = true;
   "update.mode" = "manual";
   "extensions.autoUpdate" = false;
   "explorer.openEditors.visible" = 0;
@@ -21,7 +24,6 @@
   "ruby.useBundler" = true;
   "ruby.useLanguageServer" = true;
   "ruby.lint" = {
-    "ruby" = true;
     "rubocop"."useBundler" = true;
   };
   "solargraph.symbols" = false;
@@ -61,4 +63,5 @@
       "after" = [ "^" ];
     }
   ];
+  "sorbet.useBundler" = true;
 }

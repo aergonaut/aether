@@ -343,6 +343,12 @@ in {
         version = "1.3.1";
         sha256 = "1d5143m9ysn0s8q2c06gw7fswk5mah1p3g2gcrg93117y7ky24s3";
       }
+      {
+        name = "sorbet-lsp";
+        publisher = "danhuynhdev";
+        version = "0.1.5";
+        sha256 = "110q52vgan5alf0gzxwg1a4z8qxwr5ry23gf5ma37j5mxdhvw194";
+      }
     ];
   };
 }
