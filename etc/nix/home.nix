@@ -36,6 +36,7 @@ in {
     ripgrep
     shadowenv
     tmux
+    watchman
     yarn
     youtube-dl
   ];
