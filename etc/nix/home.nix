@@ -297,9 +297,13 @@ in {
       }
     ];
 
-    extensions = with pkgs.vscode-extensions; [
-      vscodevim.vim
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "vim";
+        publisher = "vscodevim";
+        version = "1.18.4";
+        sha256 = "1j5wp9mq9n4mykh2a1frx0y4z9mq748mjadrlbyx7w5pgk8ss2cv";
+      }
       {
         name = "nix";
         publisher = "bbenoist";

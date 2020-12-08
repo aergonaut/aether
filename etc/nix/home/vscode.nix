@@ -10,6 +10,7 @@
   "editor.rulers" = [ 80 ];
   "editor.tabSize" = 2;
   "editor.formatOnSave" = true;
+  "editor.cursorBlinking" = "solid";
   "files.insertFinalNewline" = true;
   "files.trimFinalNewlines" = true;
   "update.mode" = "manual";
@@ -43,7 +44,7 @@
       "after" = [ "$" ];
     }
   ];
-  "vim.operatorPendingModeKeyBindingsNonRecursive" = [
+  "vim.operatorPendingModeKeyBindings" = [
     {
       "before" = [ "H" ];
       "after" = [ "^" ];
@@ -53,14 +54,14 @@
       "after" = [ "$" ];
     }
   ];
-  "vim.visualModeKeyBindingsNonRecursive" = [
+  "vim.visualModeKeyBindings" = [
     {
       "before" = [ "H" ];
       "after" = [ "^" ];
     }
     {
       "before" = [ "L" ];
-      "after" = [ "^" ];
+      "after" = [ "$" ];
     }
   ];
   "sorbet.useBundler" = true;
