@@ -44,7 +44,7 @@
       "after" = [ "$" ];
     }
     {
-      "before" = [ "<leader>" "e" ];
+      "before" = [ "g" "m" ];
       "commands" = [ "editor.action.marker.nextInFiles" ];
     }
   ];
