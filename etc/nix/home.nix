@@ -247,6 +247,8 @@ in {
       colorscheme neodark
       let g:neodark#terminal_transparent = 1
 
+      let mapleader="<space>"
+
       " fzf
       let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
       nnoremap <C-p> :Files<cr>
@@ -260,6 +262,8 @@ in {
       " easier beginning/end of line
       noremap H ^
       noremap L $
+
+      ${builtins.readFile ./home/coc-keybinds.vim}
     '';
 
     plugins = with pkgs.vimPlugins; [
