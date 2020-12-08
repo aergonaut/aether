@@ -43,6 +43,10 @@
       "before" = [ "L" ];
       "after" = [ "$" ];
     }
+    {
+      "before" = [ "<leader>" "e" ];
+      "commands" = [ "editor.action.marker.nextInFiles" ];
+    }
   ];
   "vim.operatorPendingModeKeyBindings" = [
     {
