@@ -27,6 +27,7 @@
   "ruby.lint" = {
     "rubocop"."useBundler" = true;
   };
+  "ruby.intellisense" = "rubyLocate";
   "solargraph.symbols" = false;
   "vim.leader" = "<space>";
   "vim.sneak" = true;
