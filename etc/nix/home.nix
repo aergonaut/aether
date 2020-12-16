@@ -358,6 +358,12 @@ in {
         version = "0.1.5";
         sha256 = "110q52vgan5alf0gzxwg1a4z8qxwr5ry23gf5ma37j5mxdhvw194";
       }
+      {
+        name = "vscode-tailwindcss";
+        publisher = "bradlc";
+        version = "0.5.6";
+        sha256 = "0hvga74mddvncq2ngzx9zz1f7al45vjx63968sw655r50za9jaml";
+      }
     ];
   };
 }
