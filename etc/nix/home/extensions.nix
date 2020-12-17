@@ -1,4 +1,6 @@
 [
+  # This list does not include rebornix.Ruby because that extension needs write permission inside its folder to start the Language Server, but the Nix store is readonly
+
   {
     name = "vim";
     publisher = "vscodevim";
