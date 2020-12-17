@@ -364,6 +364,12 @@ in {
         version = "0.5.6";
         sha256 = "0hvga74mddvncq2ngzx9zz1f7al45vjx63968sw655r50za9jaml";
       }
+      {
+        name = "vscode-open-in-github";
+        publisher = "fabiospampinato";
+        version = "1.2.3";
+        sha256 = "0xij1qgx89namw2w2kqw7c9rvspckiz16fmpdyvcmmx36cxqwkgd";
+      }
     ];
   };
 }
