@@ -54,6 +54,10 @@
   # Nix settings
   programs.nix-index.enable = true;
   services.nix-daemon.enable = false;
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
   nix.useDaemon = false;
   nix.maxJobs = 4;
   nix.buildCores = 4;

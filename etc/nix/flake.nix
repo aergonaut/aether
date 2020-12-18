@@ -9,7 +9,7 @@
   };
 
   outputs = { nixpkgs, darwin, home-manager, ... }: {
-    darwingConfigurations.aether = {
+    darwinConfigurations.aether = darwin.lib.darwinSystem {
       modules = [
         ./darwin.nix
         home-manager.darwinModules.home-manager
