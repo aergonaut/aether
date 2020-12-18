@@ -244,8 +244,14 @@ in {
     vimAlias = true;
     extraConfig = ''
       set termguicolors
-      colorscheme neodark
+
       let g:neodark#terminal_transparent = 1
+      colorscheme neodark
+
+      set number
+
+      set splitbelow
+      set splitright
 
       let mapleader="<space>"
 
@@ -273,6 +279,7 @@ in {
 
       vim-sensible
       vim-surround
+      vim-sneak
       vim-easymotion
       fzf-vim
 
