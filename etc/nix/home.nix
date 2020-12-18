@@ -245,9 +245,6 @@ in {
     extraConfig = ''
       set termguicolors
 
-      let g:neodark#terminal_transparent = 1
-      colorscheme neodark
-
       set number
 
       set splitbelow
@@ -284,7 +281,13 @@ in {
       fzf-vim
 
       coc-nvim
-      neodark-vim
+      {
+        plugin = onedark-vim;
+        config = ''
+          packadd! onedark-vim
+          colorscheme onedark
+        '';
+      }
     ];
   };
 
