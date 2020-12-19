@@ -7,7 +7,7 @@ some of these settings are highly tailored to how I like to work. YMMV.
 
 ## Naming
 
-[Aether](https://en.wikipedia.org/wiki/Aether_(mythology)) was the son of Erebus
+[Aether](<https://en.wikipedia.org/wiki/Aether_(mythology)>) was the son of Erebus
 (Darkness) and Nyx (Night).
 
 Aether is also the personification of the upper sky, as opposed to the normal
@@ -19,3 +19,8 @@ air (aer) breathed by mortals.
 2. Install nix
 3. Install nix-darwin
 4. Run `darwin-rebuild switch -I darwin-config=/usr/local/aether/etc/nix/darwin.nix`
+
+## macOS Upgrades
+
+Upgrading macOS will cause some configuration from nix-darwin to be reset. After
+upgrading, run the `bin/after-upgrade.sh` script to reactivate nix-darwin.

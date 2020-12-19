@@ -1,7 +1,22 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ <home-manager/nix-darwin> ];
+
   environment.darwinConfig = "/usr/local/aether/etc/nix/darwin.nix";
+
+  users.users.chris = {
+    description = "Chris Fung";
+    home = "/Users/chris";
+    shell = pkgs.zsh;
+  };
+
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+
+    users.chris = import ./home.nix;
+  };
 
   environment.shells = [ pkgs.zsh ];
 
@@ -21,6 +36,9 @@
   system.defaults.finder.CreateDesktop = false;
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder.FXEnableExtensionChangeWarning = false;
+
+  system.keyboard.enableKeyMapping = true;
+  system.keyboard.remapCapsLockToEscape = true;
 
   services.yabai = {
     enable = true;
