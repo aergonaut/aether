@@ -27,7 +27,6 @@ in {
     chruby
     fd
     geckodriver
-    gitAndTools.gh
     git
     ls-colors
     nodejs
@@ -240,6 +239,8 @@ in {
     ];
   };
 
+  programs.gh.enable = true;
+
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -250,6 +251,8 @@ in {
 
       set splitbelow
       set splitright
+
+      set noshowmode
 
       let mapleader="<space>"
 
@@ -281,7 +284,12 @@ in {
       vim-easymotion
       fzf-vim
 
+      vim-airline
+      vim-airline-themes
+      vim-fugitive
+
       coc-nvim
+
       {
         plugin = onedark-vim;
         config = ''

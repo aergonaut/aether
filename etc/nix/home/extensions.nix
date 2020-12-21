@@ -73,4 +73,16 @@
     version = "1.2.3";
     sha256 = "0xij1qgx89namw2w2kqw7c9rvspckiz16fmpdyvcmmx36cxqwkgd";
   }
+  {
+    name = "rust-analyzer";
+    publisher = "matklad";
+    version = "0.2.416";
+    sha256 = "0f77l5i0pyd229r4kw63cwbpj3myayh50cfrz2b54j8fl07krfga";
+  }
+  {
+    name = "better-toml";
+    publisher = "bungcip";
+    version = "0.3.2";
+    sha256 = "08lhzhrn6p0xwi0hcyp6lj9bvpfj87vr99klzsiy8ji7621dzql3";
+  }
 ]
