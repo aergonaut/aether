@@ -63,6 +63,8 @@ in {
       macos_thicken_font = "0.5";
       macos_titlebar_color = "background";
 
+      cursor_blink_interval = 0;
+
       # colors
       foreground = "#abb2bf";
       background = "#1e2127";
