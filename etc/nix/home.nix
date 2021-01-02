@@ -251,6 +251,7 @@ in
     extraConfig = ''
       set termguicolors
 
+      set relativenumber
       set number
 
       set splitbelow
@@ -261,6 +262,11 @@ in
       set expandtab
       set shiftwidth=2
       set softtabstop=2
+
+      set incsearch
+      set hlsearch
+      set ignorecase
+      set smartcase
 
       let mapleader="<space>"
 
