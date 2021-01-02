@@ -37,6 +37,8 @@
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder.FXEnableExtensionChangeWarning = false;
 
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
+
   system.keyboard.enableKeyMapping = true;
   system.keyboard.remapCapsLockToEscape = true;
 
