@@ -11,6 +11,7 @@
   "editor.tabSize" = 2;
   "editor.formatOnSave" = true;
   "editor.cursorBlinking" = "solid";
+  "terminal.integrated.fontSize" = 14;
   "files.insertFinalNewline" = true;
   "files.trimFinalNewlines" = true;
   "update.mode" = "manual";
