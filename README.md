@@ -18,7 +18,12 @@ air (aer) breathed by mortals.
 1. Clone this to `/usr/local/aether`
 2. Install nix
 3. Install nix-darwin
-4. Run `darwin-rebuild switch -I darwin-config=/usr/local/aether/etc/nix/darwin.nix`
+4. Run `env TERM=xterm-256color darwin-rebuild switch -I darwin-config=/usr/local/aether/etc/nix/darwin.nix`
+
+See [this issue](https://github.com/nix-community/home-manager/issues/423#issuecomment-748387272)
+for background on why specifying `TERM` is necessary.
+
+After the first-time setup, it is no longer necessary to specify `-I`.
 
 ## macOS Upgrades
 
