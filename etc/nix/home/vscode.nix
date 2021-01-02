@@ -70,4 +70,6 @@
     }
   ];
   "sorbet.useBundler" = true;
+  "rust-analyzer.diagnostics.enableExperimental" = false;
+  "rust-analyzer.inlayHints.enable" = false;
 }

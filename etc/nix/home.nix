@@ -14,13 +14,14 @@ let
     sha256 = "14zvbnrnkcmqnjbw71j4jgfm7gkrgpchkfrpdw006q25gqxj0bgm";
   };
 
-  ls-colors = pkgs.runCommand "ls-colors" { } ''
+  ls-colors = pkgs.runCommand "ls-colors" {} ''
     mkdir -p $out/bin $out/share
     ln -s ${pkgs.coreutils}/bin/ls $out/bin/ls
     ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
     cp ${LS_COLORS}/LS_COLORS $out/share/LS_COLORS
   '';
-in {
+in
+{
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
@@ -33,6 +34,7 @@ in {
     overmind
     pinentry_mac
     ripgrep
+    rnix-lsp
     shadowenv
     tmux
     watchman
