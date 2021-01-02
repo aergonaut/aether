@@ -308,6 +308,7 @@ in
 
       vim-sensible
       vim-surround
+      vim-vinegar
 
       {
         plugin = vim-sneak;
@@ -329,6 +330,9 @@ in
       coc-tsserver
       coc-prettier
       coc-eslint
+      coc-html
+      coc-yaml
+      coc-solargraph
     ];
   };
 
