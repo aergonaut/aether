@@ -269,6 +269,10 @@ in
       set smartcase
 
       set cc=80
+      set list listchars=tab:»·,trail:·,space:·
+
+      set wildmode=list:longest,list:full
+      set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,*/tmp/*,*.so,*.swp,*.zip
 
       let mapleader="<space>"
 
@@ -310,7 +314,7 @@ in
         config = ''
           let g:sneak#label = 1
 
-          highlight Sneak guifg=#282C34 guibg=#E5C07B 
+          highlight Sneak guifg=#282C34 guibg=#E5C07B
         '';
       }
 
