@@ -282,22 +282,6 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
-      vim-nix
-      vim-ruby
-      rust-vim
-
-      vim-sensible
-      vim-surround
-      vim-sneak
-      vim-easymotion
-      fzf-vim
-
-      vim-airline
-      vim-airline-themes
-      vim-fugitive
-
-      coc-nvim
-
       {
         plugin = onedark-vim;
         config = ''
@@ -305,6 +289,32 @@ in
           colorscheme onedark
         '';
       }
+
+      vim-nix
+      vim-ruby
+      rust-vim
+
+      vim-sensible
+      vim-surround
+
+      {
+        plugin = vim-sneak;
+        config = ''
+          let g:sneak#label = 1
+
+          highlight Sneak guifg=#282C34 guibg=#E5C07B 
+        '';
+      }
+
+      fzf-vim
+
+      vim-airline
+      vim-airline-themes
+      vim-fugitive
+
+      coc-nvim
+      coc-json
+      coc-tsserver
     ];
   };
 
