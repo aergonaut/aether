@@ -268,6 +268,8 @@ in
       set ignorecase
       set smartcase
 
+      set cc=80
+
       let mapleader="<space>"
 
       " fzf
@@ -321,8 +323,12 @@ in
       coc-nvim
       coc-json
       coc-tsserver
+      coc-prettier
+      coc-eslint
     ];
   };
+
+  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
 
   programs.vscode = {
     enable = true;
