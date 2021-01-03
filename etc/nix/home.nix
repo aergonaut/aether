@@ -319,7 +319,12 @@ in
         '';
       }
 
-      fzf-vim
+      {
+        plugin = fzf-vim;
+        config = ''
+          let g:fzf_layout = { 'down': '~40%' }
+        '';
+      }
 
       vim-airline
       vim-airline-themes
