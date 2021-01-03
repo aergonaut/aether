@@ -66,6 +66,7 @@ in
       macos_titlebar_color = "background";
 
       cursor_blink_interval = 0;
+      mouse_hide_wait = -1;
 
       # colors
       foreground = "#abb2bf";
