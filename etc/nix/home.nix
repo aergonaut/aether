@@ -55,7 +55,7 @@ in
   programs.kitty = {
     enable = true;
     font = {
-      package = pkgs.hack-font;
+      package = pkgs.nerdfonts.override { fonts = ["Hack"]; };
       name = "Hack";
     };
     settings = {
@@ -327,7 +327,12 @@ in
         '';
       }
 
-      vim-airline
+      {
+        plugin = vim-airline;
+        config = ''
+          let g:airline_powerline_fonts = 1
+        '';
+      }
       vim-airline-themes
       vim-fugitive
 
