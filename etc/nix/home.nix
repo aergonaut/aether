@@ -318,6 +318,10 @@ in
       vim-sensible
       vim-surround
       vim-vinegar
+      vim-fugitive
+      vim-rsi
+      vim-commentary
+      vim-endwise
 
       {
         plugin = vim-sneak;
@@ -342,7 +346,8 @@ in
         '';
       }
       vim-airline-themes
-      vim-fugitive
+
+      vim-snippets
 
       coc-nvim
       coc-json
@@ -352,6 +357,7 @@ in
       coc-html
       coc-yaml
       coc-solargraph
+      coc-snippets
     ];
   };
 
