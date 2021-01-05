@@ -364,6 +364,8 @@ in
       vim-snippets
       vim-automkdir
 
+      vim-rails
+
       coc-nvim
       coc-json
       coc-tsserver

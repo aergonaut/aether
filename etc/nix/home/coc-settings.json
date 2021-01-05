@@ -24,6 +24,7 @@
     "typescript",
     "typescriptreact"
   ],
+  "solargraph.checkGemVersion": false,
   "eslint.autoFixOnSave": true,
   "eslint.quiet": true,
   "html.format.enable": true,
