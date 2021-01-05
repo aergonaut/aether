@@ -279,7 +279,7 @@ in
 
       " fzf
       let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
-      nnoremap <C-p> :Files<cr>
+      nnoremap <C-t> :Files<cr>
 
       " window commands
       nnoremap <C-h> <C-w>h
@@ -290,6 +290,9 @@ in
       " easier beginning/end of line
       noremap H ^
       noremap L $
+
+      " clear highlight
+      nmap <Esc> <Esc>:nohlsearch<CR>
 
       ${builtins.readFile ./home/coc-keybinds.vim}
     '';
