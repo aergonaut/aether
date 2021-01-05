@@ -20,6 +20,17 @@ let
     ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
     cp ${LS_COLORS}/LS_COLORS $out/share/LS_COLORS
   '';
+
+  vim-conflicted = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-conflicted";
+    version = "2021-01-05";
+    src = pkgs.fetchFromGitHub {
+      owner = "christoomey";
+      repo = "vim-conflicted";
+      rev = "068c320796f807ac4961618e3e62316773803996";
+      sha256 = "c7bb6437bd606e7b751c8e8d410345ddeeed19251b925b4d3789db57a5ee9cd3";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -218,6 +229,7 @@ in
       cp = "cherry-pick";
       unc = "reset --soft HEAD^";
       uns = "reset";
+      conflicted = "!vim +Conflicted";
     };
 
     ignores = [
@@ -347,7 +359,10 @@ in
       }
       vim-airline-themes
 
+      vim-conflicted
+
       vim-snippets
+      vim-automkdir
 
       coc-nvim
       coc-json
