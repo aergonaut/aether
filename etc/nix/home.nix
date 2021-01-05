@@ -275,7 +275,7 @@ in
       set wildmode=list:longest,list:full
       set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,*/tmp/*,*.so,*.swp,*.zip
 
-      let mapleader="<space>"
+      let mapleader=" "
 
       " fzf
       let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
@@ -293,6 +293,11 @@ in
 
       " clear highlight
       nmap <Esc> <Esc>:nohlsearch<CR>
+
+      " Fugitive
+      nnoremap <Leader>gs :Git<CR>
+
+      ${builtins.readFile ./home/vim/help.vim}
 
       ${builtins.readFile ./home/coc-keybinds.vim}
     '';
