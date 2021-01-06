@@ -375,6 +375,7 @@ in
       coc-yaml
       coc-solargraph
       coc-snippets
+      coc-rust-analyzer
     ];
   };
 

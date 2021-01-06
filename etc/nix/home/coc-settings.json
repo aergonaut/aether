@@ -29,6 +29,8 @@
   "eslint.quiet": true,
   "html.format.enable": true,
   "tsserver.formatOnType": true,
+  "rust-analyzer.inlayHints.enable": false,
+  "rust-analyzer.diagnostics.enableExperimental": false,
   "coc.preferences.formatOnType": true,
   "languageserver": {
     "nix": {
