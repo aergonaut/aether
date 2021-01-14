@@ -376,6 +376,7 @@ in
       coc-solargraph
       coc-snippets
       coc-rust-analyzer
+      coc-pairs
     ];
   };
 
