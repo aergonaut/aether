@@ -326,6 +326,8 @@ in
       vim-nix
       vim-ruby
       rust-vim
+      typescript-vim
+      vim-jsx-typescript
 
       vim-sensible
       vim-surround
