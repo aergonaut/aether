@@ -31,6 +31,17 @@ let
       sha256 = "c7bb6437bd606e7b751c8e8d410345ddeeed19251b925b4d3789db57a5ee9cd3";
     };
   };
+
+  vim-system-copy = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-system-copy";
+    version = "2021-01-15";
+    src = pkgs.fetchFromGitHub {
+      owner = "christoomey";
+      repo = "vim-system-copy";
+      rev = "1264373f305b324294d672c3d64bab3e4dec90bc";
+      sha256 = "c76f0274a3d98486a45814b5b1642bf782c95c75848a7198555d032eebd4f60a";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -309,6 +320,9 @@ in
       " Fugitive
       nnoremap <Leader>gs :Git<CR>
 
+      " copy filepath variants
+      nmap <silent> <Leader>C :let @*=expand("%") \| echohl String \| echon 'Copied: ' . expand("%") \| echohl None<CR>
+
       ${builtins.readFile ./home/vim/help.vim}
 
       ${builtins.readFile ./home/coc-keybinds.vim}
@@ -362,6 +376,7 @@ in
       vim-airline-themes
 
       vim-conflicted
+      vim-system-copy
 
       vim-snippets
       vim-automkdir
