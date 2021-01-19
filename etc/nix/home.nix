@@ -342,6 +342,7 @@ in
       rust-vim
       typescript-vim
       vim-jsx-typescript
+      vim-toml
 
       vim-sensible
       vim-surround

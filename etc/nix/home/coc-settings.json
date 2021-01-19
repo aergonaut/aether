@@ -22,14 +22,14 @@
     "javascript",
     "javascriptreact",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "rust"
   ],
   "solargraph.checkGemVersion": false,
   "eslint.autoFixOnSave": true,
   "eslint.quiet": true,
   "html.format.enable": true,
   "tsserver.formatOnType": true,
-  "rust-analyzer.inlayHints.enable": false,
   "rust-analyzer.diagnostics.enableExperimental": false,
   "coc.preferences.formatOnType": true,
   "languageserver": {
