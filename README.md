@@ -23,7 +23,7 @@ air (aer) breathed by mortals.
 See [this issue](https://github.com/nix-community/home-manager/issues/423#issuecomment-748387272)
 for background on why specifying `TERM` is necessary.
 
-After the first-time setup, it is no longer necessary to specify `-I`.
+After the first-time setup, it is no longer necessary to specify `-I` or `TERM`
 
 ## macOS Upgrades
 

@@ -5,6 +5,10 @@
 
   environment.darwinConfig = "/usr/local/aether/etc/nix/darwin.nix";
 
+  environment.variables = {
+    TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+  };
+
   users.users.chris = {
     description = "Chris Fung";
     home = "/Users/chris";

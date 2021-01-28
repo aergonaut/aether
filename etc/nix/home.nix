@@ -76,10 +76,16 @@ in
 
   programs.kitty = {
     enable = true;
+
     font = {
       package = pkgs.nerdfonts.override { fonts = ["Hack"]; };
       name = "Hack";
     };
+
+    keybindings = {
+      "super+t" = "launch --cwd=current --type=tab";
+    };
+
     settings = {
       window_padding_width = 5;
       active_border_color = "#98c379";
