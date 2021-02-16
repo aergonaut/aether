@@ -42,6 +42,39 @@ let
       sha256 = "c76f0274a3d98486a45814b5b1642bf782c95c75848a7198555d032eebd4f60a";
     };
   };
+
+  vim-cutlass = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-cutlass";
+    version = "2021-02-15";
+    src = pkgs.fetchFromGitHub {
+      owner = "svermeulen";
+      repo = "vim-cutlass";
+      rev = "7afd649415541634c8ce317fafbc31cd19d57589";
+      sha256 = "8f95bdabdd390290dfddfbc2212e14c321d89c466ee4872d9fee89915ff18e28";
+    };
+  };
+
+  vim-subversive = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-subversive";
+    version = "2021-02-15";
+    src = pkgs.fetchFromGitHub {
+      owner = "svermeulen";
+      repo = "vim-subversive";
+      rev = "5695f97fc803767bf657a5e512daec19dd1fd786";
+      sha256 = "f8e22428cc19b16ea1e4b0a4235981b29154902b6a217e515dd88b37e6db7a52";
+    };
+  };
+
+  vim-yoink = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-yoink";
+    version = "2021-02-15";
+    src = pkgs.fetchFromGitHub {
+      owner = "svermeulen";
+      repo = "vim-yoink";
+      rev = "b973fce71d45fe7c290119448651da7a1b9943a1";
+      sha256 = "0d10254774c9211dcfc910880d2e4a540a77041d1fb57b102b1190d14bd959b2";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -329,6 +362,18 @@ in
       " copy filepath variants
       nmap <silent> <Leader>C :let @*=expand("%") \| echohl String \| echon 'Copied: ' . expand("%") \| echohl None<CR>
 
+      " cutlass
+      nnoremap x d
+      xnoremap x d
+
+      " s for substitute
+      nmap s <plug>(SubversiveSubstitute)
+      nmap ss <plug>(SubversiveSubstituteLine)
+      nmap S <plug>(SubversiveSubstituteToEndOfLine)
+
+      nnoremap xx dd
+      nnoremap X D
+
       ${builtins.readFile ./home/vim/help.vim}
 
       ${builtins.readFile ./home/coc-keybinds.vim}
@@ -357,6 +402,15 @@ in
       vim-rsi
       vim-commentary
       vim-endwise
+
+      vim-cutlass
+      vim-subversive
+      {
+        plugin = vim-yoink;
+        config = ''
+          let g:yoinkIncludeDeleteOperations = 1
+        '';
+      }
 
       {
         plugin = vim-sneak;
