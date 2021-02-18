@@ -374,6 +374,18 @@ in
       nnoremap xx dd
       nnoremap X D
 
+      function! s:ThankYouNext() abort
+        update
+        argdelete %
+        bdelete
+        if !empty(argv())
+          argument
+        endif
+      endfunction
+
+      command! ThankYouNext call <sid>ThankYouNext()
+
+
       ${builtins.readFile ./home/vim/help.vim}
 
       ${builtins.readFile ./home/coc-keybinds.vim}
