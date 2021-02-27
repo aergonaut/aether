@@ -26,6 +26,7 @@
     "rust"
   ],
   "solargraph.checkGemVersion": false,
+  "solargraph.diagnostics": true,
   "eslint.autoFixOnSave": true,
   "eslint.quiet": true,
   "html.format.enable": true,

@@ -385,10 +385,11 @@ in
 
       command! ThankYouNext call <sid>ThankYouNext()
 
+      imap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+      imap <expr><cr> pumvisible() ? "\<c-y>" : "\<cr><plug>DiscretionaryEnd"
 
       ${builtins.readFile ./home/vim/help.vim}
-
-      ${builtins.readFile ./home/coc-keybinds.vim}
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -413,7 +414,13 @@ in
       vim-fugitive
       vim-rsi
       vim-commentary
-      vim-endwise
+
+      {
+        plugin = vim-endwise;
+        config = ''
+          let g:endwise_no_mappings = 1
+        '';
+      }
 
       vim-cutlass
       vim-subversive
@@ -451,26 +458,54 @@ in
       vim-conflicted
       vim-system-copy
 
-      vim-snippets
+      {
+        plugin = deoplete-nvim;
+        config = ''
+          let g:deoplete#enable_at_startup = 1
+        '';
+      }
+
+      # ultisnips
+      # vim-snippets
+
       vim-automkdir
 
       vim-rails
 
-      coc-nvim
-      coc-json
-      coc-tsserver
-      coc-prettier
-      coc-eslint
-      coc-html
-      coc-yaml
-      coc-solargraph
-      coc-snippets
-      coc-rust-analyzer
-      coc-pairs
+      {
+        plugin = ale;
+        config = ''
+          let g:ale_linters = {
+          \   'ruby': ['ruby', 'rubocop'],
+          \}
+
+          let g:ale_fixers = {
+          \   '*': ['remove_trailing_lines'],
+          \   'javascript': ['prettier'],
+          \   'typescript': ['prettier'],
+          \   'javascriptreact': ['prettier'],
+          \   'typescriptreact': ['prettier'],
+          \}
+
+          let g:ale_fix_on_save = 1
+        '';
+      }
+
+      # coc-nvim
+      # coc-json
+      # coc-tsserver
+      # coc-prettier
+      # coc-eslint
+      # coc-html
+      # coc-yaml
+      # coc-solargraph
+      # coc-snippets
+      # coc-rust-analyzer
+      # coc-pairs
     ];
   };
 
-  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
+  # xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
 
   programs.vscode = {
     enable = true;
