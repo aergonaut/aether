@@ -389,6 +389,15 @@ in
 
       imap <expr><cr> pumvisible() ? "\<c-y>" : "\<cr><plug>DiscretionaryEnd"
 
+      nmap <silent> gd <Plug>(ale_go_to_definition)
+      nmap <silent> gy <Plug>(ale_go_to_type_definition)
+
+      nmap <silent> [g <Plug>(ale_previous_wrap)
+      nmap <silent> ]g <Plug>(ale_next_wrap)
+      nmap <silent> <Leader>i <Plug>(ale_detail)
+
+      nmap <silent> K <Plug>(ale_hover)
+
       ${builtins.readFile ./home/vim/help.vim}
     '';
 
