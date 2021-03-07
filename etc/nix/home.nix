@@ -75,6 +75,17 @@ let
       sha256 = "0d10254774c9211dcfc910880d2e4a540a77041d1fb57b102b1190d14bd959b2";
     };
   };
+
+  ale-2021 = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "ale";
+    version = "2021-03-06";
+    src = pkgs.fetchFromGitHub {
+      owner = "dense-analysis";
+      repo = "ale";
+      rev = "8c5081f6316183c97298ec4a819fd94c2a2a9516";
+      sha256 = "7aeb28acb708bee5cf03d2354e7766838dcc62d642b6c798997d6f95780a2dcc";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -482,7 +493,7 @@ in
       vim-rails
 
       {
-        plugin = ale;
+        plugin = ale-2021;
         config = ''
           let g:ale_linters = {
           \   'ruby': ['ruby', 'rubocop'],
@@ -497,6 +508,15 @@ in
           \}
 
           let g:ale_fix_on_save = 1
+
+          let g:ale_floating_preview = 1
+          let g:ale_hover_to_floating_preview = 1
+          let g:ale_detail_to_floating_preview = 1
+
+          let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰']
+
+          let g:ale_cursor_detail = 1
+          let g:ale_close_preview_on_insert = 1
         '';
       }
 
