@@ -86,6 +86,8 @@
   nix.maxJobs = 4;
   nix.buildCores = 4;
 
+  nixpkgs.config.allowUnfree = true;
+
   # For backwards compatibility
   system.stateVersion = 4;
 }

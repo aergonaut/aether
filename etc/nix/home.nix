@@ -96,6 +96,8 @@ in
     geckodriver
     git
     ls-colors
+    mkcert
+    ngrok
     nodejs
     overmind
     pinentry_mac
