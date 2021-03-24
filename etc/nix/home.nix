@@ -99,6 +99,9 @@ in
     mkcert
     ngrok
     nodejs
+    nss
+    nss.dev
+    nss.tools
     overmind
     pinentry_mac
     ripgrep
