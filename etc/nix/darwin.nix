@@ -7,6 +7,7 @@
 
   environment.variables = {
     TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+    FREEDESKTOP_MIME_TYPES_PATH = "${pkgs.shared-mime-info}/share/mime/packages/freedesktop.org.xml";
   };
 
   users.users.chris = {
@@ -29,6 +30,7 @@
   environment.systemPackages = with pkgs; [
     coreutils
     home-manager
+    shared-mime-info
   ];
 
   system.defaults.dock.autohide = true;
