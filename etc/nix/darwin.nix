@@ -10,6 +10,9 @@
     FREEDESKTOP_MIME_TYPES_PATH = "${pkgs.shared-mime-info}/share/mime/packages/freedesktop.org.xml";
   };
 
+  users.nix.configureBuildUsers = true;
+  users.knownGroups = [ "nixbld" ];
+
   users.users.chris = {
     description = "Chris Fung";
     home = "/Users/chris";

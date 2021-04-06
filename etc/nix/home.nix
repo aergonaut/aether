@@ -327,6 +327,7 @@ in
   programs.neovim = {
     enable = true;
     vimAlias = true;
+    withRuby = false;
     extraConfig = ''
       set termguicolors
 
@@ -370,7 +371,7 @@ in
       noremap L $
 
       " clear highlight
-      nmap <Esc> <Esc>:nohlsearch<CR>
+      nmap <silent> <Esc> <Esc>:nohlsearch<CR>
 
       " Fugitive
       nnoremap <Leader>gs :Git<CR>
@@ -412,9 +413,11 @@ in
       nmap <silent> ]g <Plug>(ale_next_wrap)
       nmap <silent> <Leader>i <Plug>(ale_detail)
 
-      nmap <silent> K <Plug>(ale_hover)
+      nmap <silentkk
 
       ${builtins.readFile ./home/vim/help.vim}
+
+      ${builtins.readFile ./home/coc-keybinds.vim}
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -483,63 +486,79 @@ in
       vim-conflicted
       vim-system-copy
 
-      {
-        plugin = deoplete-nvim;
-        config = ''
-          let g:deoplete#enable_at_startup = 1
-        '';
-      }
+      # {
+      #   plugin = deoplete-nvim;
+      #   config = ''
+      #     let g:deoplete#enable_at_startup = 1
+      #   '';
+      # }
 
-      # ultisnips
-      # vim-snippets
+      vim-snippets
 
       vim-automkdir
 
       vim-rails
 
-      {
-        plugin = ale-2021;
-        config = ''
-          let g:ale_linters = {
-          \   'ruby': ['ruby', 'rubocop'],
-          \}
+      # {
+      #   plugin = nvim-lspconfig;
+      #   config = ''
+      #     lua << EOF
+      #       local lspconfig = require'lspconfig'
 
-          let g:ale_fixers = {
-          \   '*': ['remove_trailing_lines'],
-          \   'javascript': ['prettier'],
-          \   'typescript': ['prettier'],
-          \   'javascriptreact': ['prettier'],
-          \   'typescriptreact': ['prettier'],
-          \}
+      #       lspconfig.solargraph.setup{
+      #         solargraph = {
+      #           diagnostics = true,
+      #           useBundler = true
+      #         }
+      #       }
+      #     EOF
+      #   '';
+      # }
 
-          let g:ale_fix_on_save = 1
+      # {
+      #   plugin = ale-2021;
+      #   config = ''
+      #     let g:ale_linters = {
+      #     \   'ruby': ['ruby', 'rubocop'],
+      #     \}
 
-          let g:ale_floating_preview = 1
-          let g:ale_hover_to_floating_preview = 1
-          let g:ale_detail_to_floating_preview = 1
+      #     let g:ale_fixers = {
+      #     \   '*': ['remove_trailing_lines'],
+      #     \   'javascript': ['prettier'],
+      #     \   'typescript': ['prettier'],
+      #     \   'javascriptreact': ['prettier'],
+      #     \   'typescriptreact': ['prettier'],
+      #     \}
 
-          let g:ale_floating_window_border = [' ', ' ', ' ', ' ', ' ', ' ']
+      #     let g:ale_fix_on_save = 1
 
-          let g:ale_cursor_detail = 1
-          let g:ale_close_preview_on_insert = 1
-        '';
-      }
+      #     let g:ale_floating_preview = 1
+      #     let g:ale_hover_to_floating_preview = 1
+      #     let g:ale_detail_to_floating_preview = 1
 
-      # coc-nvim
-      # coc-json
-      # coc-tsserver
-      # coc-prettier
+      #     let g:ale_floating_window_border = [' ', ' ', ' ', ' ', ' ', ' ']
+
+      #     let g:ale_cursor_detail = 1
+      #     let g:ale_close_preview_on_insert = 1
+      #   '';
+      # }
+
+      coc-nvim
+      coc-diagnostic
+      coc-json
+      coc-tsserver
+      coc-prettier
       # coc-eslint
-      # coc-html
-      # coc-yaml
+      coc-html
+      coc-yaml
       # coc-solargraph
-      # coc-snippets
-      # coc-rust-analyzer
-      # coc-pairs
+      coc-snippets
+      coc-rust-analyzer
+      coc-pairs
     ];
   };
 
-  # xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
+  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
 
   programs.vscode = {
     enable = true;
