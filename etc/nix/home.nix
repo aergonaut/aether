@@ -121,7 +121,6 @@ in
   '';
 
   xdg.enable = true;
-  xdg.configFile."starship.toml".text = builtins.readFile ./home/config/starship.toml;
 
   programs.kitty = {
     enable = true;
@@ -412,6 +411,7 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
+      # color theme
       {
         plugin = onedark-vim;
         config = ''
@@ -420,6 +420,7 @@ in
         '';
       }
 
+      # syntax support
       vim-nix
       vim-ruby
       rust-vim
@@ -477,62 +478,11 @@ in
       vim-conflicted
       vim-system-copy
 
-      # {
-      #   plugin = deoplete-nvim;
-      #   config = ''
-      #     let g:deoplete#enable_at_startup = 1
-      #   '';
-      # }
-
       vim-snippets
 
       vim-automkdir
 
       vim-rails
-
-      # {
-      #   plugin = nvim-lspconfig;
-      #   config = ''
-      #     lua << EOF
-      #       local lspconfig = require'lspconfig'
-
-      #       lspconfig.solargraph.setup{
-      #         solargraph = {
-      #           diagnostics = true,
-      #           useBundler = true
-      #         }
-      #       }
-      #     EOF
-      #   '';
-      # }
-
-      # {
-      #   plugin = ale-2021;
-      #   config = ''
-      #     let g:ale_linters = {
-      #     \   'ruby': ['ruby', 'rubocop'],
-      #     \}
-
-      #     let g:ale_fixers = {
-      #     \   '*': ['remove_trailing_lines'],
-      #     \   'javascript': ['prettier'],
-      #     \   'typescript': ['prettier'],
-      #     \   'javascriptreact': ['prettier'],
-      #     \   'typescriptreact': ['prettier'],
-      #     \}
-
-      #     let g:ale_fix_on_save = 1
-
-      #     let g:ale_floating_preview = 1
-      #     let g:ale_hover_to_floating_preview = 1
-      #     let g:ale_detail_to_floating_preview = 1
-
-      #     let g:ale_floating_window_border = [' ', ' ', ' ', ' ', ' ', ' ']
-
-      #     let g:ale_cursor_detail = 1
-      #     let g:ale_close_preview_on_insert = 1
-      #   '';
-      # }
 
       coc-nvim
       coc-diagnostic
