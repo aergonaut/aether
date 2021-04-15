@@ -257,6 +257,25 @@ in
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      format = lib.concatStrings [
+        "$username"
+        "$hostname"
+        "$shlvl"
+        "$directory"
+        "$git_branch"
+        "$git_commit"
+        "$git_state"
+        # "$git_status"
+        "$nodejs"
+        "$ruby"
+        "$cmd_duration"
+        "$line_break"
+        "$jobs"
+        "$status"
+        "$character"
+      ];
+    };
   };
 
   programs.git = {
@@ -325,6 +344,7 @@ in
 
   programs.neovim = {
     enable = true;
+    # package = pkgs.neovim-nightly;
     vimAlias = true;
     withRuby = false;
     extraConfig = ''

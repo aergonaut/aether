@@ -1,6 +1,6 @@
 {
   "coc.preferences.jumpCommand": "drop",
-  "coc.preferences.hoverTarget": "float",
+  "hover.target": "float",
   "diagnostic.refreshOnInsertMode": true,
   "suggest.floatEnable": true,
   "suggest.noselect": false,
@@ -9,8 +9,8 @@
   "suggest.enablePreselect": true,
   "diagnostic.errorSign": "!!",
   "diagnostic.warningSign": "!!",
-  "diagnostic.infoSign": "!!",
-  "diagnostic.hintSign": "!!",
+  "diagnostic.infoSign": "--",
+  "diagnostic.hintSign": "--",
   "diagnostic.maxWindowHeight": 20,
   "signature.maxWindowHeight": 20,
   "diagnostic.checkCurrentLine": true,

@@ -31,6 +31,7 @@
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
+    cachix
     coreutils
     home-manager
     shared-mime-info
@@ -92,6 +93,11 @@
   nix.buildCores = 4;
 
   nixpkgs.config.allowUnfree = true;
+  # nixpkgs.overlays = [
+  #   (import (builtins.fetchTarball {
+  #     url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+  #   }))
+  # ];
 
   # For backwards compatibility
   system.stateVersion = 4;
