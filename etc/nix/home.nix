@@ -76,14 +76,14 @@ let
     };
   };
 
-  ale-2021 = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "ale";
-    version = "2021-03-06";
+  nvim-compe = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "nvim-compe";
+    version = "2021-04-22";
     src = pkgs.fetchFromGitHub {
-      owner = "dense-analysis";
-      repo = "ale";
-      rev = "8c5081f6316183c97298ec4a819fd94c2a2a9516";
-      sha256 = "7aeb28acb708bee5cf03d2354e7766838dcc62d642b6c798997d6f95780a2dcc";
+      owner = "hrsh7th";
+      repo = "nvim-compe";
+      rev = "99452ae6875889c12653963b68e53c4564848954";
+      sha256 = "1d5hpn3mr2h3s5h2svajbxm0n49mmc5w0sip9cpzyfdpbnv1gic3";
     };
   };
 in
@@ -344,7 +344,7 @@ in
 
   programs.neovim = {
     enable = true;
-    # package = pkgs.neovim-nightly;
+    package = pkgs.neovim-nightly;
     vimAlias = true;
     withRuby = false;
     extraConfig = ''
@@ -352,6 +352,7 @@ in
 
       set relativenumber
       set number
+      set signcolumn=yes
 
       set splitbelow
       set splitright
@@ -378,6 +379,8 @@ in
       " fzf
       let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
       nnoremap <C-t> :Files<cr>
+      nnoremap <Leader>ff :Files<CR>
+      nnoremap <Leader>fg :Rg<CR>
 
       " window commands
       nnoremap <C-h> <C-w>h
@@ -421,13 +424,11 @@ in
 
       command! ThankYouNext call <sid>ThankYouNext()
 
-      imap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+      " imap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-      imap <expr><cr> pumvisible() ? "\<c-y>" : "\<cr><plug>DiscretionaryEnd"
+      " imap <expr><cr> pumvisible() ? "\<c-y>" : "\<cr><plug>DiscretionaryEnd"
 
       ${builtins.readFile ./home/vim/help.vim}
-
-      ${builtins.readFile ./home/coc-keybinds.vim}
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -455,12 +456,13 @@ in
       vim-rsi
       vim-commentary
 
-      {
-        plugin = vim-endwise;
-        config = ''
-          let g:endwise_no_mappings = 1
-        '';
-      }
+      # {
+      #   plugin = vim-endwise;
+      #   config = ''
+      #     let g:endwise_no_mappings = 1
+      #   '';
+      # }
+      lexima-vim
 
       vim-cutlass
       vim-subversive
@@ -504,18 +506,157 @@ in
 
       vim-rails
 
-      coc-nvim
-      coc-diagnostic
-      coc-json
-      coc-tsserver
-      coc-prettier
-      # coc-eslint
-      coc-html
-      coc-yaml
-      # coc-solargraph
-      coc-snippets
-      coc-rust-analyzer
-      coc-pairs
+      {
+        plugin = nvim-compe;
+        config = ''
+          set completeopt=menuone,noselect
+          set shortmess+=c
+
+          let g:lexima_no_default_rules = v:true
+          call lexima#set_default_rules()
+          inoremap <silent><expr> <C-Space> compe#complete()
+          inoremap <silent><expr> <CR>      compe#confirm(lexima#expand('<LT>CR>', 'i'))
+          inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+          inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+          inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+          lua << EOF
+            require'compe'.setup {
+              enabled = true;
+              autocomplete = true;
+              debug = false;
+              min_length = 1;
+              preselect = 'enable';
+              throttle_time = 80;
+              source_timeout = 200;
+              incomplete_delay = 400;
+              max_abbr_width = 100;
+              max_kind_width = 100;
+              max_menu_width = 100;
+              documentation = true;
+
+              source = {
+                path = true;
+                buffer = true;
+                calc = true;
+                nvim_lsp = true;
+              };
+            }
+          EOF
+        '';
+      }
+
+      {
+        plugin = nvim-lspconfig;
+        config = ''
+          lua << EOF
+            local nvim_lsp = require('lspconfig')
+            local on_attach = function(client, bufnr)
+              local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+              local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+              buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+              -- Mappings.
+              local opts = { noremap=true, silent=true }
+              buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+              buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+              buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+              buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+              buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+              buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+              buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+              buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+              buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+              buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+              buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+              buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+              buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+              buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+              buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+              buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+              -- Set some keybinds conditional on server capabilities
+              if client.resolved_capabilities.document_formatting then
+                buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+              end
+              if client.resolved_capabilities.document_range_formatting then
+                buf_set_keymap("v", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+              end
+
+              -- Set autocommands conditional on server_capabilities
+              if client.resolved_capabilities.document_highlight then
+                vim.api.nvim_exec([[
+                  hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+                  hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+                  hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+                  augroup lsp_document_highlight
+                    autocmd! * <buffer>
+                    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+                  augroup END
+                ]], false)
+              end
+            end
+
+            nvim_lsp.tsserver.setup { on_attach = on_attach }
+            nvim_lsp.jsonls.setup { on_attach = on_attach }
+            nvim_lsp.cssls.setup { on_attach = on_attach }
+            nvim_lsp.html.setup { on_attach = on_attach }
+            nvim_lsp.rnix.setup { on_attach = on_attach }
+
+            nvim_lsp.diagnosticls.setup {
+              on_attach = on_attach,
+              filetypes = { "ruby" },
+              init_options = {
+                filetypes = {
+                  ruby = "rubocop"
+                },
+                linters = {
+                  rubocop = {
+                    command = "bundle",
+                    sourceName = "rubocop",
+                    debounce = 100,
+                    args = {
+                      "exec", "rubocop", "--format", "json", "--force-exclusion", "--stdin", "%filepath"
+                    },
+                    parseJson = {
+                      errorsRoot = "files[0].offenses",
+                      line = "location.start_line",
+                      endLine = "location.last_line",
+                      column = "location.start_column",
+                      endColumn = "location.end_column",
+                      message = "[''${cop_name}] ''${message}",
+                      security = "severity"
+                    },
+                    securities = {
+                      fatal = "error",
+                      error = "error",
+                      warning = "warning",
+                      convention = "info",
+                      refactor = "info",
+                      info = "info"
+                    }
+                  }
+                }
+              }
+            }
+          EOF
+        '';
+      }
+
+      # coc-nvim
+      # coc-diagnostic
+      # coc-json
+      # coc-tsserver
+      # coc-prettier
+      # # coc-eslint
+      # coc-html
+      # coc-yaml
+      # # coc-solargraph
+      # coc-snippets
+      # coc-rust-analyzer
+      # coc-pairs
     ];
   };
 
