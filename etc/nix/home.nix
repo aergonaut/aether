@@ -119,6 +119,7 @@ in
     rnix-lsp
     shadowenv
     tmux
+    tree-sitter
     watchman
     yarn
     youtube-dl
@@ -406,23 +407,8 @@ in
       " clear highlight
       nmap <silent> <Esc> <Esc>:nohlsearch<CR>
 
-      " Fugitive
-      nnoremap <Leader>gs :Git<CR>
-
       " copy filepath variants
       nmap <silent> <Leader>C :let @*=expand("%") \| echohl String \| echon 'Copied: ' . expand("%") \| echohl None<CR>
-
-      " cutlass
-      nnoremap x d
-      xnoremap x d
-
-      " s for substitute
-      nmap s <plug>(SubversiveSubstitute)
-      nmap ss <plug>(SubversiveSubstituteLine)
-      nmap S <plug>(SubversiveSubstituteToEndOfLine)
-
-      nnoremap xx dd
-      nnoremap X D
 
       function! s:ThankYouNext() abort
         update
@@ -434,10 +420,6 @@ in
       endfunction
 
       command! ThankYouNext call <sid>ThankYouNext()
-
-      " imap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-      " imap <expr><cr> pumvisible() ? "\<c-y>" : "\<cr><plug>DiscretionaryEnd"
 
       ${builtins.readFile ./home/vim/help.vim}
     '';
@@ -453,6 +435,19 @@ in
       }
 
       # syntax support
+      {
+        plugin = nvim-treesitter;
+        config = ''
+          lua << EOF
+            require'nvim-treesitter.configs'.setup {
+              ensure_installed = "maintained",
+              highlight = {
+                enable = true,
+              },
+            }
+          EOF
+        '';
+      }
       vim-nix
       vim-ruby
       rust-vim
@@ -463,20 +458,39 @@ in
       vim-sensible
       vim-surround
       vim-vinegar
-      vim-fugitive
+
+      { 
+        plugin = vim-fugitive;
+        config = ''
+          nnoremap <Leader>gs :Git<CR>
+        '';
+      }
+
       vim-rsi
       vim-commentary
 
-      # {
-      #   plugin = vim-endwise;
-      #   config = ''
-      #     let g:endwise_no_mappings = 1
-      #   '';
-      # }
       lexima-vim
 
-      vim-cutlass
-      vim-subversive
+      {
+        plugin = vim-cutlass;
+        config = ''
+          nnoremap x d
+          xnoremap x d
+          nnoremap xx dd
+          nnoremap X D
+        '';
+      }
+
+      {
+        plugin = vim-subversive;
+        config = ''
+          " s for substitute
+          nmap s <plug>(SubversiveSubstitute)
+          nmap ss <plug>(SubversiveSubstituteLine)
+          nmap S <plug>(SubversiveSubstituteToEndOfLine)
+        '';
+      }
+
       {
         plugin = vim-yoink;
         config = ''
@@ -511,7 +525,6 @@ in
       vim-conflicted
       vim-system-copy
 
-      # vim-snippets
       vim-vsnip
       vim-vsnip-integ
       friendly-snippets
@@ -702,23 +715,8 @@ in
           EOF
         '';
       }
-
-      # coc-nvim
-      # coc-diagnostic
-      # coc-json
-      # coc-tsserver
-      # coc-prettier
-      # # coc-eslint
-      # coc-html
-      # coc-yaml
-      # # coc-solargraph
-      # coc-snippets
-      # coc-rust-analyzer
-      # coc-pairs
     ];
   };
-
-  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./home/coc-settings.json;
 
   programs.vscode = {
     enable = true;
