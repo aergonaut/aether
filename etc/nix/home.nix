@@ -150,7 +150,7 @@ in
     enable = true;
 
     font = {
-      package = pkgs.nerdfonts.override { fonts = ["Hack"]; };
+      package = pkgs.nerdfonts.override { fonts = [ "Hack" ]; };
       name = "Hack";
     };
 
@@ -468,7 +468,7 @@ in
       vim-surround
       vim-vinegar
 
-      { 
+      {
         plugin = vim-fugitive;
         config = ''
           nnoremap <Leader>gs :Git<CR>
@@ -515,7 +515,7 @@ in
         '';
       }
 
-      { 
+      {
         plugin = telescope-nvim;
         config = ''
           lua << EOF
@@ -557,7 +557,7 @@ in
 
       vim-rails
 
-      { 
+      {
         plugin = nvim-comment;
         config = ''
           lua << EOF
@@ -799,6 +799,7 @@ in
           autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 1000)
           autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync(nil, 1000)
           autocmd BufWritePre *.md lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.nix lua vim.lsp.buf.formatting_sync(nil, 1000)
         '';
       }
     ];
