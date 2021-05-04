@@ -97,6 +97,17 @@ let
       sha256 = "1ap2nf84gbrqlykw1l8zx01m9hm92vw57wkkzv2cqkjcbm3whqyg";
     };
   };
+
+  nvim-comment = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "nvim-comment";
+    version = "2021-04-26";
+    src = pkgs.fetchFromGitHub {
+      owner = "terrortylor";
+      repo = "nvim-comment";
+      rev = "e7de7abf17204424065b926a9031f44b47efbf4a";
+      sha256 = "19m31sjmpn590y5rzs2mgkgqij5hr6v5hnvw30qfh3fjgm3j7fdi";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -115,6 +126,7 @@ in
     nss.tools
     overmind
     pinentry_mac
+    nodePackages.prettier
     ripgrep
     rnix-lsp
     shadowenv
@@ -388,12 +400,6 @@ in
 
       let mapleader=" "
 
-      " fzf
-      let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
-      nnoremap <C-t> :Files<cr>
-      nnoremap <Leader>ff :Files<CR>
-      nnoremap <Leader>fg :Rg<CR>
-
       " window commands
       nnoremap <C-h> <C-w>h
       nnoremap <C-j> <C-w>j
@@ -425,6 +431,9 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
+      plenary-nvim
+      popup-nvim
+
       # color theme
       {
         plugin = onedark-vim;
@@ -467,7 +476,6 @@ in
       }
 
       vim-rsi
-      vim-commentary
 
       lexima-vim
 
@@ -507,10 +515,26 @@ in
         '';
       }
 
-      {
-        plugin = fzf-vim;
+      { 
+        plugin = telescope-nvim;
         config = ''
-          let g:fzf_layout = { 'down': '~40%' }
+          lua << EOF
+            local actions = require('telescope.actions')
+            require('telescope').setup{
+              defaults = {
+                mappings = {
+                  i = {
+                    ["<esc>"] = actions.close
+                  },
+                },
+              }
+            }
+          EOF
+
+          nnoremap <leader>ff <cmd>Telescope find_files<cr>
+          nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+          nnoremap <leader>fb <cmd>Telescope buffers<cr>
+          nnoremap <leader>fh <cmd>Telescope help_tags<cr>
         '';
       }
 
@@ -532,6 +556,17 @@ in
       vim-automkdir
 
       vim-rails
+
+      { 
+        plugin = nvim-comment;
+        config = ''
+          lua << EOF
+            require('nvim_comment').setup()
+            vim.api.nvim_set_keymap("n", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+            vim.api.nvim_set_keymap("v", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+          EOF
+        '';
+      }
 
       {
         plugin = nvim-compe;
@@ -670,7 +705,17 @@ in
               end
             end
 
-            nvim_lsp.tsserver.setup { on_attach = on_attach }
+            -- Custom on_attach for tsserver
+            local tsserver_onattach = function(client, bufnr)
+              on_attach(client, bufnr)
+              -- Disable formatting via tsserver (in favor of prettier through dls)
+              client.resolved_capabilities.document_formatting = false
+            end
+            nvim_lsp.tsserver.setup {
+              on_attach = tsserver_onattach,
+              settings = { documentFormatting = false }
+            }
+
             nvim_lsp.jsonls.setup { on_attach = on_attach }
             nvim_lsp.cssls.setup { on_attach = on_attach }
             nvim_lsp.html.setup { on_attach = on_attach }
@@ -678,7 +723,13 @@ in
 
             nvim_lsp.diagnosticls.setup {
               on_attach = on_attach,
-              filetypes = { "ruby" },
+              filetypes = {
+                "ruby",
+                "javascript",
+                "javascriptreact",
+                "typescript",
+                "typescriptreact"
+              },
               init_options = {
                 filetypes = {
                   ruby = "rubocop"
@@ -709,10 +760,45 @@ in
                       info = "info"
                     }
                   }
+                },
+                formatFiletypes = {
+                  javascript = "prettier",
+                  javascriptreact = "prettier",
+                  typescript = "prettier",
+                  typescriptreact = "prettier",
+                  markdown = "prettier"
+                },
+                formatters = {
+                  prettier = {
+                    command = "prettier",
+                    args = {
+                      "--stdin-filepath", "%filepath"
+                    },
+                    rootPatterns = {
+                      ".prettierrc",
+                      ".prettierrc.json",
+                      ".prettierrc.toml",
+                      ".prettierrc.json",
+                      ".prettierrc.yml",
+                      ".prettierrc.yaml",
+                      ".prettierrc.json5",
+                      ".prettierrc.js",
+                      ".prettierrc.cjs",
+                      "prettier.config.js",
+                      "prettier.config.cjs"
+                    }
+                  }
                 }
               }
             }
           EOF
+
+          " autocmds for formatting on save
+          autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.md lua vim.lsp.buf.formatting_sync(nil, 1000)
         '';
       }
     ];
