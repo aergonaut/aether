@@ -108,6 +108,50 @@ let
       sha256 = "19m31sjmpn590y5rzs2mgkgqij5hr6v5hnvw30qfh3fjgm3j7fdi";
     };
   };
+
+  popup-nvim-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "popup-nvim";
+    version = "2021-05-09";
+    src = pkgs.fetchFromGitHub {
+      owner = "nvim-lua";
+      repo = "popup.nvim";
+      rev = "5e3bece7b4b4905f4ec89bee74c09cfd8172a16a";
+      sha256 = "1k6rz652fjkzhjd8ljr0l6vfispanrlpq0r4aya4qswzxni4rxhg";
+    };
+  };
+
+  plenary-nvim-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "plenary-nvim";
+    version = "2021-05-09";
+    src = pkgs.fetchFromGitHub {
+      owner = "nvim-lua";
+      repo = "plenary.nvim";
+      rev = "3f993308024697186c02d51df1330bf07c12535a";
+      sha256 = "0riw3wy94qhbdvx32nmlc1s85n3ykg64n45p7i7mii0cd17mqm27";
+    };
+  };
+
+  vim-airline-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-airline";
+    version = "2021-05-10";
+    src = pkgs.fetchFromGitHub {
+      owner = "vim-airline";
+      repo = "vim-airline";
+      rev = "ab4962b83866e181b989cb550c527cbfa327942c";
+      sha256 = "14df2fk5psn27v3rhpxv1h7yhpkzl4rzld7i148lm02cj0qahnhq";
+    };
+  };
+
+  vim-github-dark = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "vim-github-dark";
+    version = "2021-05-09";
+    src = pkgs.fetchFromGitHub {
+      owner = "wojciechkepka";
+      repo = "vim-github-dark";
+      rev = "76cd259ac3885fdf3a576be47b7289899eb13f78";
+      sha256 = "1516z4klz28sirwmkyax0n5vlwlgbz180xp1i2cnrgz4r43m4avl";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -290,7 +334,7 @@ in
         "$git_branch"
         "$git_commit"
         "$git_state"
-        # "$git_status"
+        "$git_status"
         "$nodejs"
         "$ruby"
         "$cmd_duration"
@@ -431,15 +475,11 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
-      plenary-nvim
-      popup-nvim
-
-      # color theme
       {
-        plugin = onedark-vim;
+        plugin = vim-github-dark;
         config = ''
-          packadd! onedark-vim
-          colorscheme onedark
+          colorscheme ghdark
+          autocmd ColorScheme * highlight ColorColumn guibg=#161b22
         '';
       }
 
@@ -506,14 +546,7 @@ in
         '';
       }
 
-      {
-        plugin = vim-sneak;
-        config = ''
-          let g:sneak#label = 1
-
-          highlight Sneak guifg=#282C34 guibg=#E5C07B
-        '';
-      }
+      vim-easymotion
 
       {
         plugin = telescope-nvim;
@@ -539,12 +572,209 @@ in
       }
 
       {
-        plugin = vim-airline;
+        plugin = vim-airline-head;
         config = ''
+          let g:airline_experimental = 0
           let g:airline_powerline_fonts = 1
         '';
       }
-      vim-airline-themes
+      # vim-airline-themes
+      nvim-web-devicons
+      #       {
+      #         plugin = galaxyline-nvim;
+      #         config = ''
+      #           lua << EOF
+      #             local gl = require('galaxyline')
+      #             local gls = gl.section
+      #             gl.short_line_list = {'LuaTree','vista','dbui'}
+      # 
+      #             local colors = {
+      #               bg = '#282c34',
+      #               yellow = '#fabd2f',
+      #               cyan = '#008080',
+      #               darkblue = '#081633',
+      #               green = '#afd700',
+      #               orange = '#FF8800',
+      #               purple = '#5d4d7a',
+      #               magenta = '#d16d9e',
+      #               grey = '#c0c0c0',
+      #               blue = '#0087d7',
+      #               red = '#ec5f67'
+      #             }
+      # 
+      #             local buffer_not_empty = function()
+      #               if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
+      #                 return true
+      #               end
+      #               return false
+      #             end
+      # 
+      #             gls.left[1] = {
+      #               FirstElement = {
+      #                 provider = function() return '▋' end,
+      #                 highlight = {colors.blue,colors.yellow}
+      #               },
+      #             }
+      #             gls.left[2] = {
+      #               ViMode = {
+      #                 provider = function()
+      #                   local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v= 'VISUAL',V= 'VISUAL LINE', [''] = 'VISUAL BLOCK'}
+      #                   return alias[vim.fn.mode()]
+      #                 end,
+      #                 separator = '',
+      #                 separator_highlight = {colors.purple,function()
+      #                   if not buffer_not_empty() then
+      #                     return colors.purple
+      #                   end
+      #                   return colors.darkblue
+      #                 end},
+      #                 highlight = {colors.darkblue,colors.purple,'bold'},
+      #               },
+      #             }
+      #             gls.left[3] ={
+      #               FileIcon = {
+      #                 provider = 'FileIcon',
+      #                 condition = buffer_not_empty,
+      #                 highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.darkblue},
+      #               },
+      #             }
+      #             gls.left[4] = {
+      #               FileName = {
+      #                 provider = {'FileName','FileSize'},
+      #                 condition = buffer_not_empty,
+      #                 separator = '',
+      #                 separator_highlight = {colors.purple,colors.darkblue},
+      #                 highlight = {colors.magenta,colors.darkblue}
+      #               }
+      #             }
+      # 
+      #             gls.left[5] = {
+      #               GitIcon = {
+      #                 provider = function() return '  ' end,
+      #                 condition = buffer_not_empty,
+      #                 highlight = {colors.orange,colors.purple},
+      #               }
+      #             }
+      #             gls.left[6] = {
+      #               GitBranch = {
+      #                 provider = 'GitBranch',
+      #                 condition = buffer_not_empty,
+      #                 highlight = {colors.grey,colors.purple},
+      #               }
+      #             }
+      # 
+      #             local checkwidth = function()
+      #               local squeeze_width  = vim.fn.winwidth(0) / 2
+      #               if squeeze_width > 40 then
+      #                 return true
+      #               end
+      #               return false
+      #             end
+      # 
+      #             gls.left[7] = {
+      #               DiffAdd = {
+      #                 provider = 'DiffAdd',
+      #                 condition = checkwidth,
+      #                 icon = ' ',
+      #                 highlight = {colors.green,colors.purple},
+      #               }
+      #             }
+      #             gls.left[8] = {
+      #               DiffModified = {
+      #                 provider = 'DiffModified',
+      #                 condition = checkwidth,
+      #                 icon = ' ',
+      #                 highlight = {colors.orange,colors.purple},
+      #               }
+      #             }
+      #             gls.left[9] = {
+      #               DiffRemove = {
+      #                 provider = 'DiffRemove',
+      #                 condition = checkwidth,
+      #                 icon = ' ',
+      #                 highlight = {colors.red,colors.purple},
+      #               }
+      #             }
+      #             gls.left[10] = {
+      #               LeftEnd = {
+      #                 provider = function() return '' end,
+      #                 separator = '',
+      #                 separator_highlight = {colors.purple,colors.bg},
+      #                 highlight = {colors.purple,colors.purple}
+      #               }
+      #             }
+      #             gls.left[11] = {
+      #               DiagnosticError = {
+      #                 provider = 'DiagnosticError',
+      #                 icon = '  ',
+      #                 highlight = {colors.red,colors.bg}
+      #               }
+      #             }
+      #             gls.left[12] = {
+      #               Space = {
+      #                 provider = function () return ' ' end
+      #               }
+      #             }
+      #             gls.left[13] = {
+      #               DiagnosticWarn = {
+      #                 provider = 'DiagnosticWarn',
+      #                 icon = '  ',
+      #                 highlight = {colors.blue,colors.bg},
+      #               }
+      #             }
+      #             gls.right[1]= {
+      #               FileFormat = {
+      #                 provider = 'FileFormat',
+      #                 separator = '',
+      #                 separator_highlight = {colors.bg,colors.purple},
+      #                 highlight = {colors.grey,colors.purple},
+      #               }
+      #             }
+      #             gls.right[2] = {
+      #               LineInfo = {
+      #                 provider = 'LineColumn',
+      #                 separator = ' | ',
+      #                 separator_highlight = {colors.darkblue,colors.purple},
+      #                 highlight = {colors.grey,colors.purple},
+      #               },
+      #             }
+      #             gls.right[3] = {
+      #               PerCent = {
+      #                 provider = 'LinePercent',
+      #                 separator = '',
+      #                 separator_highlight = {colors.darkblue,colors.purple},
+      #                 highlight = {colors.grey,colors.darkblue},
+      #               }
+      #             }
+      #             gls.right[4] = {
+      #               ScrollBar = {
+      #                 provider = 'ScrollBar',
+      #                 highlight = {colors.yellow,colors.purple},
+      #               }
+      #             }
+      # 
+      #             gls.short_line_left[1] = {
+      #               BufferType = {
+      #                 provider = 'FileTypeName',
+      #                 separator = '',
+      #                 separator_highlight = {colors.purple,colors.bg},
+      #                 highlight = {colors.grey,colors.purple}
+      #               }
+      #             }
+      # 
+      # 
+      #             gls.short_line_right[1] = {
+      #               BufferIcon = {
+      #                 provider= 'BufferIcon',
+      #                 separator = '',
+      #                 separator_highlight = {colors.purple,colors.bg},
+      #                 highlight = {colors.grey,colors.purple}
+      #               }
+      #             }
+      # 
+      #           EOF
+      #         '';
+      #       }
 
       vim-conflicted
       vim-system-copy
