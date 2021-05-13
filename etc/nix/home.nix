@@ -131,6 +131,17 @@ let
     };
   };
 
+  telescope-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "telescope.nvim";
+    version = "2021-05-11";
+    src = pkgs.fetchFromGitHub {
+      owner = "nvim-telescope";
+      repo = "telescope.nvim";
+      rev = "6dc69f46f65babe052981b64576cd7b21e26bab0";
+      sha256 = "1wfp4rci2jdal9z6c0cwpf4027jhfshvzyd9d2slh44cvvw4lk7l";
+    };
+  };
+
   vim-airline-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "vim-airline";
     version = "2021-05-10";
@@ -512,6 +523,15 @@ in
         plugin = vim-fugitive;
         config = ''
           nnoremap <Leader>gs :Git<CR>
+        '';
+      }
+
+      {
+        plugin = gitsigns-nvim;
+        config = ''
+          lua << EOF
+            require('gitsigns').setup()
+          EOF
         '';
       }
 
@@ -899,7 +919,7 @@ in
               buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
               buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
               buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-              buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+              -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
               buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
               buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
               buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
