@@ -155,12 +155,12 @@ let
 
   vim-github-dark = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "vim-github-dark";
-    version = "2021-05-09";
+    version = "2021-05-13";
     src = pkgs.fetchFromGitHub {
       owner = "wojciechkepka";
       repo = "vim-github-dark";
-      rev = "76cd259ac3885fdf3a576be47b7289899eb13f78";
-      sha256 = "1516z4klz28sirwmkyax0n5vlwlgbz180xp1i2cnrgz4r43m4avl";
+      rev = "a46a3faf338032aef9cf491a726076fecf3144b1";
+      sha256 = "1w7gas3349v6w1309kqzg7wlx1li4a9mr6kazky5ah91hwgajxaa";
     };
   };
 in
@@ -522,7 +522,7 @@ in
       {
         plugin = vim-fugitive;
         config = ''
-          nnoremap <Leader>gs :Git<CR>
+          nnoremap <silent><Leader>gs :Git<CR>
         '';
       }
 
@@ -532,6 +532,10 @@ in
           lua << EOF
             require('gitsigns').setup()
           EOF
+
+          autocmd ColorScheme * hi! link GitSignsAdd GhGreen
+          autocmd ColorScheme * hi! link GitSignsChange GhOrange
+          autocmd ColorScheme * hi! link GitSignsDelete GhRed
         '';
       }
 
