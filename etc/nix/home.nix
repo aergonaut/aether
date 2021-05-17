@@ -109,50 +109,6 @@ let
     };
   };
 
-  popup-nvim-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "popup-nvim";
-    version = "2021-05-09";
-    src = pkgs.fetchFromGitHub {
-      owner = "nvim-lua";
-      repo = "popup.nvim";
-      rev = "5e3bece7b4b4905f4ec89bee74c09cfd8172a16a";
-      sha256 = "1k6rz652fjkzhjd8ljr0l6vfispanrlpq0r4aya4qswzxni4rxhg";
-    };
-  };
-
-  plenary-nvim-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "plenary-nvim";
-    version = "2021-05-09";
-    src = pkgs.fetchFromGitHub {
-      owner = "nvim-lua";
-      repo = "plenary.nvim";
-      rev = "3f993308024697186c02d51df1330bf07c12535a";
-      sha256 = "0riw3wy94qhbdvx32nmlc1s85n3ykg64n45p7i7mii0cd17mqm27";
-    };
-  };
-
-  telescope-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "telescope.nvim";
-    version = "2021-05-11";
-    src = pkgs.fetchFromGitHub {
-      owner = "nvim-telescope";
-      repo = "telescope.nvim";
-      rev = "6dc69f46f65babe052981b64576cd7b21e26bab0";
-      sha256 = "1wfp4rci2jdal9z6c0cwpf4027jhfshvzyd9d2slh44cvvw4lk7l";
-    };
-  };
-
-  vim-airline-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "vim-airline";
-    version = "2021-05-10";
-    src = pkgs.fetchFromGitHub {
-      owner = "vim-airline";
-      repo = "vim-airline";
-      rev = "ab4962b83866e181b989cb550c527cbfa327942c";
-      sha256 = "14df2fk5psn27v3rhpxv1h7yhpkzl4rzld7i148lm02cj0qahnhq";
-    };
-  };
-
   vim-github-dark = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "vim-github-dark";
     version = "2021-05-13";
@@ -161,6 +117,17 @@ let
       repo = "vim-github-dark";
       rev = "a46a3faf338032aef9cf491a726076fecf3144b1";
       sha256 = "1w7gas3349v6w1309kqzg7wlx1li4a9mr6kazky5ah91hwgajxaa";
+    };
+  };
+
+  tokyonight-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "tokyonight.nvim";
+    version = "2021-05-17";
+    src = pkgs.fetchFromGitHub {
+      owner = "folke";
+      repo = "tokyonight.nvim";
+      rev = "48b2bee03cebc9d8e97ede9a41fddf0f7e3a4527";
+      sha256 = "1zany3rys1jjhhc81v1zb3a765dsim4f4w56gb4irsqq9vq3ln66";
     };
   };
 in
@@ -486,11 +453,19 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
+      # {
+      #   plugin = vim-github-dark;
+      #   config = ''
+      #     colorscheme ghdark
+      #     autocmd ColorScheme * highlight ColorColumn guibg=#161b22
+      #   '';
+      # }
       {
-        plugin = vim-github-dark;
+        plugin = tokyonight-nvim;
         config = ''
-          colorscheme ghdark
-          autocmd ColorScheme * highlight ColorColumn guibg=#161b22
+          let g:tokyonight_style = "night"
+          let g:tokyonight_sidebars = [ "qf" ]
+          colorscheme tokyonight
         '';
       }
 
@@ -596,12 +571,31 @@ in
       }
 
       {
-        plugin = vim-airline-head;
+        plugin = lualine-nvim;
         config = ''
-          let g:airline_experimental = 0
-          let g:airline_powerline_fonts = 1
+          lua << EOF
+            require('lualine').setup {
+              options = { theme = "tokyonight" };
+              sections = {
+                lualine_c = {
+                  {
+                    "diagnostics",
+                    sources = { "nvim_lsp" },
+                    symbols = {error = ' ', warn = ' ', info = ' '}
+                  }
+                }
+              }
+            }
+          EOF
         '';
       }
+      # {
+      #   plugin = vim-airline-head;
+      #   config = ''
+      #     let g:airline_experimental = 0
+      #     let g:airline_powerline_fonts = 1
+      #   '';
+      # }
       # vim-airline-themes
       nvim-web-devicons
       #       {
@@ -809,7 +803,14 @@ in
 
       vim-automkdir
 
-      vim-rails
+      {
+        plugin = vim-rails;
+        config = ''
+          lua << EOF
+            vim.api.nvim_set_keymap("n", "<leader>rr", ":.Rails", {noremap=true, silent=true})
+          EOF
+        '';
+      }
 
       {
         plugin = nvim-comment;
@@ -1045,6 +1046,10 @@ in
                 }
               }
             }
+
+            vim.fn.sign_define("LspDiagnosticsSignError", {text=""})
+            vim.fn.sign_define("LspDiagnosticsSignWarning", {text=""})
+            vim.fn.sign_define("LspDiagnosticsSignInformation", {text=""})
           EOF
 
           " autocmds for formatting on save
