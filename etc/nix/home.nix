@@ -594,7 +594,8 @@ in
                     "diagnostics",
                     sources = { "nvim_lsp" },
                     symbols = {error = ' ', warn = ' ', info = ' '}
-                  }
+                  },
+                  "filename"
                 }
               }
             }
