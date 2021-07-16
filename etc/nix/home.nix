@@ -363,6 +363,7 @@ in
       url."https://github.com/coupa/".insteadOf = [
         "git@github.com:coupa/"
         "ssh://git@github.com:coupa/"
+        "git+ssh://git@github.com:coupa/"
       ];
     };
 
