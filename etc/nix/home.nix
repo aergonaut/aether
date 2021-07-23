@@ -572,6 +572,11 @@ in
                     ["<esc>"] = actions.close
                   },
                 },
+              },
+              pickers = {
+                find_files = {
+                  find_command = { "fd", "--type", "f", "-uu", "-E", "node_modules", "-E", ".git" }
+                }
               }
             }
           EOF
@@ -589,14 +594,19 @@ in
           lua << EOF
             require('lualine').setup {
               options = { theme = "tokyonight" };
+              extensions = { "fugitive" };
               sections = {
                 lualine_c = {
                   {
                     "diagnostics",
                     sources = { "nvim_lsp" },
-                    symbols = {error = ' ', warn = ' ', info = ' '}
+                    symbols = { error = ' ', warn = ' ', info = ' ' }
                   },
-                  "filename"
+                  {
+                    "filename",
+                    file_status = true,
+                    path = 1
+                  }
                 }
               }
             }
