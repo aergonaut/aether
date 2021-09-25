@@ -149,6 +149,8 @@ in
     overmind
     pinentry_mac
     nodePackages.prettier
+    nodePackages.diagnostic-languageserver
+    nodePackages.typescript-language-server
     ripgrep
     rnix-lsp
     shadowenv
