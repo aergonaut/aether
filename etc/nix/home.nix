@@ -14,7 +14,7 @@ let
     sha256 = "14zvbnrnkcmqnjbw71j4jgfm7gkrgpchkfrpdw006q25gqxj0bgm";
   };
 
-  ls-colors = pkgs.runCommand "ls-colors" {} ''
+  ls-colors = pkgs.runCommand "ls-colors" { } ''
     mkdir -p $out/bin $out/share
     ln -s ${pkgs.coreutils}/bin/ls $out/bin/ls
     ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
@@ -76,17 +76,6 @@ let
     };
   };
 
-  nvim-compe = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "nvim-compe";
-    version = "2021-04-22";
-    src = pkgs.fetchFromGitHub {
-      owner = "hrsh7th";
-      repo = "nvim-compe";
-      rev = "99452ae6875889c12653963b68e53c4564848954";
-      sha256 = "1d5hpn3mr2h3s5h2svajbxm0n49mmc5w0sip9cpzyfdpbnv1gic3";
-    };
-  };
-
   friendly-snippets = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "friendly-snippets";
     version = "2021-04-25";
@@ -134,32 +123,37 @@ in
 {
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    chruby
-    fd
-    geckodriver
-    git
-    ls-colors
-    mkcert
-    ngrok
-    nodejs
-    nss
-    nss.dev
-    nss.tools
-    overmind
-    pinentry_mac
-    nodePackages.prettier
-    nodePackages.diagnostic-languageserver
-    nodePackages.typescript-language-server
-    ripgrep
-    rnix-lsp
-    shadowenv
-    tmux
-    tree-sitter
-    watchman
-    yarn
-    youtube-dl
-  ];
+  home.sessionVariables = {
+    TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+  };
+
+  home.packages = with pkgs;
+    [
+      chruby
+      fd
+      geckodriver
+      git
+      ls-colors
+      mkcert
+      ngrok
+      nodejs
+      nss
+      nss.dev
+      nss.tools
+      overmind
+      pinentry_mac
+      nodePackages.prettier
+      nodePackages.diagnostic-languageserver
+      nodePackages.typescript-language-server
+      ripgrep
+      rnix-lsp
+      shadowenv
+      tmux
+      tree-sitter
+      watchman
+      yarn
+      youtube-dl
+    ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
     use-standard-socket
@@ -531,8 +525,6 @@ in
 
       vim-rsi
 
-      lexima-vim
-
       {
         plugin = vim-cutlass;
         config = ''
@@ -647,86 +639,69 @@ in
         '';
       }
 
+      # nvim-cmp plugins
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
+      cmp-vsnip
+
       {
-        plugin = nvim-compe;
+        plugin = nvim-cmp;
         config = ''
-          set completeopt=menuone,noselect
-          set shortmess+=c
+          set completeopt=menu,menuone,noselect
 
-          let g:lexima_no_default_rules = v:true
-          call lexima#set_default_rules()
-          inoremap <silent><expr> <C-Space> compe#complete()
-          inoremap <silent><expr> <CR>      compe#confirm(lexima#expand('<LT>CR>', 'i'))
-          inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-          inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-          inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+          lua <<EOF
+            -- Setup nvim-cmp.
+            local cmp = require'cmp'
 
-          lua << EOF
-            require'compe'.setup {
-              enabled = true;
-              autocomplete = true;
-              debug = false;
-              min_length = 1;
-              preselect = 'enable';
-              throttle_time = 80;
-              source_timeout = 200;
-              incomplete_delay = 400;
-              max_abbr_width = 100;
-              max_kind_width = 100;
-              max_menu_width = 100;
-              documentation = true;
+            cmp.setup({
+              snippet = {
+                -- REQUIRED - you must specify a snippet engine
+                expand = function(args)
+                  vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+                  -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                  -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                  -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+                end,
+              },
+              mapping = {
+                ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+                ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+                ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+                ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+                ['<C-e>'] = cmp.mapping({
+                  i = cmp.mapping.abort(),
+                  c = cmp.mapping.close(),
+                }),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+              },
+              sources = cmp.config.sources({
+                { name = 'nvim_lsp' },
+                { name = 'vsnip' }, -- For vsnip users.
+                -- { name = 'luasnip' }, -- For luasnip users.
+                -- { name = 'ultisnips' }, -- For ultisnips users.
+                -- { name = 'snippy' }, -- For snippy users.
+              }, {
+                { name = 'buffer' },
+              })
+            })
 
-              source = {
-                path = true;
-                buffer = true;
-                calc = true;
-                nvim_lsp = true;
-                nvim_lua = true;
-                vsnip = true;
-              };
-            }
+            -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+            -- cmp.setup.cmdline('/', {
+            --   sources = {
+            --     { name = 'buffer' }
+            --   }
+            -- })
 
-            local t = function(str)
-              return vim.api.nvim_replace_termcodes(str, true, true, true)
-            end
-
-            local check_back_space = function()
-                local col = vim.fn.col('.') - 1
-                if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-                    return true
-                else
-                    return false
-                end
-            end
-
-            -- Use (s-)tab to:
-            --- move to prev/next item in completion menuone
-            --- jump to prev/next snippet's placeholder
-            _G.tab_complete = function()
-              if vim.fn.pumvisible() == 1 then
-                return t "<C-n>"
-              elseif vim.fn.call("vsnip#available", {1}) == 1 then
-                return t "<Plug>(vsnip-expand-or-jump)"
-              elseif check_back_space() then
-                return t "<Tab>"
-              else
-                return vim.fn['compe#complete']()
-              end
-            end
-            _G.s_tab_complete = function()
-              if vim.fn.pumvisible() == 1 then
-                return t "<C-p>"
-              elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-                return t "<Plug>(vsnip-jump-prev)"
-              else
-                return t "<S-Tab>"
-              end
-            end
-
-            vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-            vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-            vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-            vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+            -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+            -- cmp.setup.cmdline(':', {
+            --   sources = cmp.config.sources({
+            --     { name = 'path' }
+            --   }, {
+            --     { name = 'cmdline' }
+            --   })
+            -- })
           EOF
         '';
       }
@@ -792,13 +767,22 @@ in
             end
             nvim_lsp.tsserver.setup {
               on_attach = tsserver_onattach,
-              settings = { documentFormatting = false }
+              settings = { documentFormatting = false },
+              capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
             }
+            
+            local basic_servers = { "jsonls", "cssls", "html", "rnix" }
+            for _, server in ipairs(basic_servers) do
+              nvim_lsp[server].setup {
+                on_attach = on_attach,
+                capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+              }
+            end
 
-            nvim_lsp.jsonls.setup { on_attach = on_attach }
-            nvim_lsp.cssls.setup { on_attach = on_attach }
-            nvim_lsp.html.setup { on_attach = on_attach }
-            nvim_lsp.rnix.setup { on_attach = on_attach }
+            -- nvim_lsp.jsonls.setup { on_attach = on_attach }
+            -- nvim_lsp.cssls.setup { on_attach = on_attach }
+            -- nvim_lsp.html.setup { on_attach = on_attach }
+            -- nvim_lsp.rnix.setup { on_attach = on_attach }
 
             nvim_lsp.diagnosticls.setup {
               on_attach = on_attach,
