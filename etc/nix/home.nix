@@ -419,8 +419,6 @@ in
       set wildmode=list:longest,list:full
       set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,*/tmp/*,*.so,*.swp,*.zip
 
-      let mapleader=" "
-
       " window commands
       nnoremap <C-h> <C-w>h
       nnoremap <C-j> <C-w>j
@@ -435,7 +433,7 @@ in
       nmap <silent> <Esc> <Esc>:nohlsearch<CR>
 
       " copy filepath variants
-      nmap <silent> <space>C :let @*=expand("%") \| echohl String \| echon 'Copied: ' . expand("%") \| echohl None<CR>
+      nmap <silent> <leader>C :let @*=expand("%") \| echohl String \| echon 'Copied: ' . expand("%") \| echohl None<CR>
 
       function! s:ThankYouNext() abort
         update
@@ -452,16 +450,14 @@ in
     '';
 
     plugins = with pkgs.vimPlugins; [
-      # {
-      #   plugin = vim-github-dark;
-      #   config = ''
-      #     colorscheme ghdark
-      #     autocmd ColorScheme * highlight ColorColumn guibg=#161b22
-      #   '';
-      # }
       {
         plugin = tokyonight-nvim;
         config = ''
+          " leader has to be set early for plugin mappings, so I guess it's
+          " part of my theme now
+          let mapleader=" "
+
+
           let g:tokyonight_style = "night"
           let g:tokyonight_sidebars = [ "qf" ]
           colorscheme tokyonight
@@ -496,7 +492,7 @@ in
       {
         plugin = vim-fugitive;
         config = ''
-          nnoremap <silent><space>gs :Git<CR>
+          nnoremap <silent><leader>gs :Git<CR>
         '';
       }
 
@@ -556,10 +552,10 @@ in
             }
           EOF
 
-          nnoremap <space>ff <cmd>Telescope find_files<cr>
-          nnoremap <space>fg <cmd>Telescope live_grep<cr>
-          nnoremap <space>fb <cmd>Telescope buffers<cr>
-          nnoremap <space>fh <cmd>Telescope help_tags<cr>
+          nnoremap <leader>ff <cmd>Telescope find_files<cr>
+          nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+          nnoremap <leader>fb <cmd>Telescope buffers<cr>
+          nnoremap <leader>fh <cmd>Telescope help_tags<cr>
         '';
       }
 
@@ -604,7 +600,7 @@ in
         plugin = vim-rails;
         config = ''
           lua << EOF
-            vim.api.nvim_set_keymap("n", "<space>rr", ":.Rails", {noremap=true, silent=true})
+            vim.api.nvim_set_keymap("n", "<leader>rr", ":.Rails", {noremap=true, silent=true})
           EOF
         '';
       }
@@ -616,8 +612,8 @@ in
         config = ''
           lua << EOF
             require('nvim_comment').setup()
-            vim.api.nvim_set_keymap("n", "<space>/", ":CommentToggle<CR>", {noremap=true, silent = true})
-            vim.api.nvim_set_keymap("v", "<space>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+            vim.api.nvim_set_keymap("n", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+            vim.api.nvim_set_keymap("v", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
           EOF
         '';
       }
@@ -627,19 +623,19 @@ in
         config = ''
           lua << EOF
             -- Lua
-            vim.api.nvim_set_keymap("n", "<space>xx", "<cmd>Trouble<cr>",
+            vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
               {silent = true, noremap = true}
             )
-            vim.api.nvim_set_keymap("n", "<space>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>",
+            vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>",
               {silent = true, noremap = true}
             )
-            vim.api.nvim_set_keymap("n", "<space>xd", "<cmd>Trouble lsp_document_diagnostics<cr>",
+            vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>",
               {silent = true, noremap = true}
             )
-            vim.api.nvim_set_keymap("n", "<space>xl", "<cmd>Trouble loclist<cr>",
+            vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
               {silent = true, noremap = true}
             )
-            vim.api.nvim_set_keymap("n", "<space>xq", "<cmd>Trouble quickfix<cr>",
+            vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
               {silent = true, noremap = true}
             )
             vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
@@ -734,24 +730,24 @@ in
               buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
               buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
               -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-              buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-              buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-              buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-              buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-              buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-              buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+              buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+              buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+              buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+              buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+              buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+              buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
               buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-              buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+              buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
               buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
               buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-              buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+              buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
               -- Set some keybinds conditional on server capabilities
               if client.resolved_capabilities.document_formatting then
-                buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+                buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
               end
               if client.resolved_capabilities.document_range_formatting then
-                buf_set_keymap("v", "<space>lf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+                buf_set_keymap("v", "<leader>lf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
               end
 
               -- Set autocommands conditional on server_capabilities
