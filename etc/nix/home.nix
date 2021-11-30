@@ -108,17 +108,6 @@ let
       sha256 = "1w7gas3349v6w1309kqzg7wlx1li4a9mr6kazky5ah91hwgajxaa";
     };
   };
-
-  tokyonight-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "tokyonight.nvim";
-    version = "2021-05-17";
-    src = pkgs.fetchFromGitHub {
-      owner = "folke";
-      repo = "tokyonight.nvim";
-      rev = "48b2bee03cebc9d8e97ede9a41fddf0f7e3a4527";
-      sha256 = "1zany3rys1jjhhc81v1zb3a765dsim4f4w56gb4irsqq9vq3ln66";
-    };
-  };
 in
 {
   programs.home-manager.enable = true;
@@ -359,6 +348,7 @@ in
       url."https://github.com/coupa/".insteadOf = [
         "git@github.com:coupa/"
         "ssh://git@github.com:coupa/"
+        "git+ssh://git@github.com/coupa/"
         "git+ssh://git@github.com:coupa/"
       ];
     };
@@ -536,23 +526,14 @@ in
       }
 
       {
-        plugin = vim-subversive;
-        config = ''
-          " s for substitute
-          nmap s <plug>(SubversiveSubstitute)
-          nmap ss <plug>(SubversiveSubstituteLine)
-          nmap S <plug>(SubversiveSubstituteToEndOfLine)
-        '';
-      }
-
-      {
         plugin = vim-yoink;
         config = ''
           let g:yoinkIncludeDeleteOperations = 1
         '';
       }
 
-      vim-easymotion
+      vim-repeat
+      lightspeed-nvim
 
       {
         plugin = telescope-nvim;
@@ -623,18 +604,47 @@ in
         plugin = vim-rails;
         config = ''
           lua << EOF
-            vim.api.nvim_set_keymap("n", "<leader>rr", ":.Rails", {noremap=true, silent=true})
+            vim.api.nvim_set_keymap("n", "<space>rr", ":.Rails", {noremap=true, silent=true})
           EOF
         '';
       }
+
+      nvim-ts-context-commentstring
 
       {
         plugin = nvim-comment;
         config = ''
           lua << EOF
             require('nvim_comment').setup()
-            vim.api.nvim_set_keymap("n", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
-            vim.api.nvim_set_keymap("v", "<leader>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+            vim.api.nvim_set_keymap("n", "<space>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+            vim.api.nvim_set_keymap("v", "<space>/", ":CommentToggle<CR>", {noremap=true, silent = true})
+          EOF
+        '';
+      }
+
+      {
+        plugin = trouble-nvim;
+        config = ''
+          lua << EOF
+            -- Lua
+            vim.api.nvim_set_keymap("n", "<space>xx", "<cmd>Trouble<cr>",
+              {silent = true, noremap = true}
+            )
+            vim.api.nvim_set_keymap("n", "<space>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>",
+              {silent = true, noremap = true}
+            )
+            vim.api.nvim_set_keymap("n", "<space>xd", "<cmd>Trouble lsp_document_diagnostics<cr>",
+              {silent = true, noremap = true}
+            )
+            vim.api.nvim_set_keymap("n", "<space>xl", "<cmd>Trouble loclist<cr>",
+              {silent = true, noremap = true}
+            )
+            vim.api.nvim_set_keymap("n", "<space>xq", "<cmd>Trouble quickfix<cr>",
+              {silent = true, noremap = true}
+            )
+            vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
+              {silent = true, noremap = true}
+            )
           EOF
         '';
       }
