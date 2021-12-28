@@ -560,6 +560,15 @@ in
       }
 
       {
+        plugin = telescope-fzf-native-nvim;
+        config = ''
+          lua << EOF
+            require('telescope').load_extension('fzf')
+          EOF
+        '';
+      }
+
+      {
         plugin = lualine-nvim;
         config = ''
           lua << EOF
@@ -713,6 +722,29 @@ in
       }
 
       {
+        plugin = null-ls-nvim;
+        config = ''
+          lua << EOF
+            local null_ls = require("null-ls")
+
+            local sources = {
+              -- diagnostics
+              null_ls.builtins.diagnostics.rubocop.with({
+                command = "bundle",
+                args = { "exec", "rubocop" , "-f", "json", "--stdin", "$FILENAME" }
+              }),
+
+              -- formatting
+              -- code actions
+              -- completion
+            }
+
+            null_ls.config({ sources = sources })
+          EOF
+        '';
+      }
+
+      {
         plugin = nvim-lspconfig;
         config = ''
           lua << EOF
@@ -785,81 +817,15 @@ in
               }
             end
 
+            -- Attach null-ls
+            nvim_lsp["null-ls"].setup {
+              on_attach = on_attach
+            }
+
             -- nvim_lsp.jsonls.setup { on_attach = on_attach }
             -- nvim_lsp.cssls.setup { on_attach = on_attach }
             -- nvim_lsp.html.setup { on_attach = on_attach }
             -- nvim_lsp.rnix.setup { on_attach = on_attach }
-
-            nvim_lsp.diagnosticls.setup {
-              on_attach = on_attach,
-              filetypes = {
-                "ruby",
-                "javascript",
-                "javascriptreact",
-                "typescript",
-                "typescriptreact"
-              },
-              init_options = {
-                filetypes = {
-                  ruby = "rubocop"
-                },
-                linters = {
-                  rubocop = {
-                    command = "bundle",
-                    sourceName = "rubocop",
-                    debounce = 100,
-                    args = {
-                      "exec", "rubocop", "--format", "json", "--force-exclusion", "--stdin", "%filepath"
-                    },
-                    parseJson = {
-                      errorsRoot = "files[0].offenses",
-                      line = "location.start_line",
-                      endLine = "location.last_line",
-                      column = "location.start_column",
-                      endColumn = "location.end_column",
-                      message = "[''${cop_name}] ''${message}",
-                      security = "severity"
-                    },
-                    securities = {
-                      fatal = "error",
-                      error = "error",
-                      warning = "warning",
-                      convention = "info",
-                      refactor = "info",
-                      info = "info"
-                    }
-                  }
-                },
-                formatFiletypes = {
-                  javascript = "prettier",
-                  javascriptreact = "prettier",
-                  typescript = "prettier",
-                  typescriptreact = "prettier",
-                  markdown = "prettier"
-                },
-                formatters = {
-                  prettier = {
-                    command = "prettier",
-                    args = {
-                      "--stdin-filepath", "%filepath"
-                    },
-                    rootPatterns = {
-                      ".prettierrc",
-                      ".prettierrc.json",
-                      ".prettierrc.toml",
-                      ".prettierrc.json",
-                      ".prettierrc.yml",
-                      ".prettierrc.yaml",
-                      ".prettierrc.json5",
-                      ".prettierrc.js",
-                      ".prettierrc.cjs",
-                      "prettier.config.js",
-                      "prettier.config.cjs"
-                    }
-                  }
-                }
-              }
-            }
 
             vim.fn.sign_define("LspDiagnosticsSignError", {text=""})
             vim.fn.sign_define("LspDiagnosticsSignWarning", {text=""})
