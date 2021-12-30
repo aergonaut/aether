@@ -108,6 +108,17 @@ let
       sha256 = "1w7gas3349v6w1309kqzg7wlx1li4a9mr6kazky5ah91hwgajxaa";
     };
   };
+
+  lualine-head = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "lualine-head";
+    version = "2021-12-29";
+    src = pkgs.fetchFromGitHub {
+      owner = "nvim-lualine";
+      repo = "lualine.nvim";
+      rev = "9e26823ea6c7361aba3253c8a5c56a6f35b4a0ee";
+      sha256 = "eae6383326302a390a6749854278198c205177928bdd9639c17c634571e17a46";
+    };
+  };
 in
 {
   programs.home-manager.enable = true;
@@ -569,7 +580,7 @@ in
       }
 
       {
-        plugin = lualine-nvim;
+        plugin = lualine-head;
         config = ''
           lua << EOF
             require('lualine').setup {
@@ -579,7 +590,7 @@ in
                 lualine_c = {
                   {
                     "diagnostics",
-                    sources = { "nvim_lsp" },
+                    sources = { "nvim_diagnostic" },
                     symbols = { error = ' ', warn = ' ', info = ' ' }
                   },
                   {
