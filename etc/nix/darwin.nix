@@ -97,14 +97,14 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
-    # nvim 0.5+
-    (
-      import (
-        builtins.fetchTarball {
-          url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-        }
-      )
-    )
+    # # nvim 0.5+
+    # (
+    #   import (
+    #     builtins.fetchTarball {
+    #       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    #     }
+    #   )
+    # )
 
     # yabai 3.3.6
     (
