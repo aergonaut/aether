@@ -132,6 +132,7 @@ in
       chruby
       fd
       geckodriver
+      gh
       git
       ls-colors
       mkcert
@@ -147,6 +148,7 @@ in
       nodePackages.typescript-language-server
       ripgrep
       rnix-lsp
+      rust-analyzer
       shadowenv
       tmux
       tree-sitter
@@ -395,8 +397,6 @@ in
       ".solargraph.yml"
     ];
   };
-
-  programs.gh.enable = true;
 
   programs.neovim = {
     enable = true;
@@ -727,6 +727,7 @@ in
         '';
       }
 
+      rust-tools-nvim
       null-ls-nvim
 
       {
@@ -803,6 +804,13 @@ in
                 capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
               }
             end
+
+            -- Use rust-tools to configure rust-analyzer
+            require("rust-tools").setup({
+              server = {
+                on_attach = on_attach
+              }
+            })
 
             -- Attach null-ls
             local null_ls = require("null-ls")
@@ -897,6 +905,7 @@ in
           autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync(nil, 1000)
           autocmd BufWritePre *.md lua vim.lsp.buf.formatting_sync(nil, 1000)
           autocmd BufWritePre *.nix lua vim.lsp.buf.formatting_sync(nil, 1000)
+          autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 2000)
         '';
       }
     ];
