@@ -123,6 +123,8 @@ in
 {
   programs.home-manager.enable = true;
 
+  home.stateVersion = "22.05";
+
   home.sessionVariables = {
     TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
   };
@@ -134,6 +136,7 @@ in
       geckodriver
       gh
       git
+      go
       ls-colors
       mkcert
       ngrok
